@@ -53,9 +53,10 @@ java -cp build app.Main
 ```
 
 ## 👥 Autores
-- Marcos Antônio Fontes Leite
-- [Adicione o nome dos colegas do grupo aqui]
-
+- Heitor Oswaldo
+- Júlia Guilhermino
+- Marcos Fontes
+- Thiago Raquel
 
 ---
 > Projeto acadêmico desenvolvido como parte da disciplina DIM0116 - Linguagem de Programação II (2025.1)
