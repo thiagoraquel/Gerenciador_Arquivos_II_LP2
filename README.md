@@ -16,7 +16,7 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 
 ## 📁 Estrutura de Pastas
 ```
-pdf-library-manager/
+Gerenciador_Arquivos/
 ├── src/                # Código-fonte em Java
 │   ├── app/            # Ponto de entrada e loop principal
 │   ├── core/           # Lógica de negócio (biblioteca, entradas, persistência)
@@ -53,9 +53,10 @@ java -cp build app.Main
 ```
 
 ## 👥 Autores
-- Marcos Antônio Fontes Leite
-- [Adicione o nome dos colegas do grupo aqui]
-
+- Heitor Oswaldo
+- Júlia Guilhermino
+- Marcos Fontes
+- Thiago Raquel
 
 ---
 > Projeto acadêmico desenvolvido como parte da disciplina DIM0116 - Linguagem de Programação II (2025.1)
