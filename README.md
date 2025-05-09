@@ -16,7 +16,7 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 
 ## 📁 Estrutura de Pastas
 ```
-pdf-library-manager/
+Gerenciador_Arquivos/
 ├── src/                # Código-fonte em Java
 │   ├── app/            # Ponto de entrada e loop principal
 │   ├── core/           # Lógica de negócio (biblioteca, entradas, persistência)
