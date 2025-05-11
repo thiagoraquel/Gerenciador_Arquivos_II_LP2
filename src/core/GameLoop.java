@@ -3,8 +3,9 @@ package core;
 import core.Library;
 import core.Config;
 
+import java.util.Scanner;
 import java.util.Vector;
-
+import java.io.File;  
 /**
  * Implementa a arquitetura Game Loop.
  * 
@@ -49,18 +50,19 @@ public class GameLoop  {
     Vector<Library> libraries = new Vector<>(); // vetor com todas as bibliotecas raiz reconhecidas pelo programa
     Library library;                            // biblioteca que esta sendo acessada
     Config config = new Config();               // configuração de inicialização
+    String lastPath;                            // caminho da última biblioteca acessada (var temporária)
+    private static final Scanner scanner = new Scanner(System.in);
 
+    // fechar o scanner
+    // obs: só fechar quando o programa terminar
+    public void close_scanner() {
+        scanner.close();
+    }
     /**
      * Construtor
     */
     public GameLoop() {
         state = e_states.STARTING;
-        String path = config.loadPath();
-        if (path == null){  // Primeira inicialização/diretório inexiste em Config.txt
-            System.out.println("Config.txt is empty");  
-        } else if (path != null){
-            System.out.println("Path at Config.txt: " + path);
-        }
     }
 
     /**
@@ -72,12 +74,49 @@ public class GameLoop  {
         return end_loop;
     }
 
+    public void initialize(){
+        String path = config.loadPath(); // Lê texto (path) no config
+        if (path == null){  // Primeira inicialização/diretório inexiste em Config.txt
+            System.out.println("Config.txt is empty");
+            System.out.print("Digite um path válido para criar um diretório: ");
+            String userInput = scanner.nextLine();
+
+            File dir = new File(userInput); 
+                if (!dir.exists()) {
+                    boolean success = dir.mkdirs();
+                    if (success) {
+                        System.out.println("Diretório criado com sucesso em: " + userInput);
+                        // Atualiza o Config.txt com o novo path
+                        config.savePath(userInput);
+                        lastPath = userInput;
+                    } else {
+                        System.out.println("Falha ao criar o diretório.");
+                    }
+                } else {
+                    System.out.println("Diretório já existe: " + userInput);
+                    config.savePath(userInput);
+                    lastPath = userInput;
+                }
+
+        } else if (path != null){   // Usuário vai para última biblioteca vistas
+            lastPath = path;
+            System.out.println("Path at Config.txt: " + path);
+        }
+
+    }
+
     /**
      * Carrega os diretórios raiz criados (biblioteca)
     */
     public void initialize(String string){
         // Carrega todos os diretórios salvos na pasta DATA no vector LIBRARY
-        // Como fazer fica a critério da pessoa <3
+        String path = config.loadPath();
+        if (path == null){  // Primeira inicialização/diretório inexiste em Config.txt
+            System.out.println("Config.txt is empty");  
+        } else if (path != null){
+            lastPath = path;
+            System.out.println("Path at Config.txt: " + path);
+        }
     }
 
     /**

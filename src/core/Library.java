@@ -17,6 +17,7 @@ import java.util.Vector;
 public class Library {
     // TODO: atributos
     Vector<Directory> directories = new Vector<>();
+    String path;           // Caminho do diretório raiz do sistema de gerenciamento
 
     /**
      * Construtor

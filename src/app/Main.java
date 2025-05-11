@@ -6,7 +6,10 @@ public class Main {
     public static void main(String[] args) {
         GameLoop loop = new GameLoop();
         
-        if (args.length > 0) {
+        if (args.length == 0) { // dois casos aqui: ou é a primeira execução (config vazio) e não foi dado path pra criar um diretório
+                                // Ou é depois da primeira execução e usuário quer acessar a última biblioteca
+            loop.initialize();
+        } else if (args.length > 0) { //casos: primeira execução e path para criar um diretório (config vazio)
             String path = args[0];
             loop.initialize(path); 
             System.out.println("Path given by terminal: " + path);
@@ -24,5 +27,6 @@ public class Main {
             loop.update();
             loop.render();
         }*/
+        loop.close_scanner();
     }
 }
