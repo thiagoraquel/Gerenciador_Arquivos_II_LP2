@@ -1,6 +1,7 @@
 package core;
 
 import core.Library;
+import core.Config;
 
 import java.util.Vector;
 
@@ -47,12 +48,20 @@ public class GameLoop  {
     boolean end_loop = false;                   // controle do loop
     Vector<Library> libraries = new Vector<>(); // vetor com todas as bibliotecas raiz reconhecidas pelo programa
     Library library;                            // biblioteca que esta sendo acessada
-
+    Config config = new Config();               // configuração de inicialização
 
     /**
      * Construtor
     */
-    public GameLoop() {}
+    public GameLoop() {
+        state = e_states.STARTING;
+        String path = config.loadPath();
+        if (path == null){  // Primeira inicialização/diretório inexiste em Config.txt
+            System.out.println("Config.txt is empty");  
+        } else if (path != null){
+            System.out.println("Path at Config.txt: " + path);
+        }
+    }
 
     /**
      * Controle do loop
@@ -66,7 +75,7 @@ public class GameLoop  {
     /**
      * Carrega os diretórios raiz criados (biblioteca)
     */
-    public void initialize(){
+    public void initialize(String string){
         // Carrega todos os diretórios salvos na pasta DATA no vector LIBRARY
         // Como fazer fica a critério da pessoa <3
     }
