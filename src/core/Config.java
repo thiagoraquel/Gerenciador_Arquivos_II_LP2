@@ -9,7 +9,7 @@ import java.io.IOException;
 public class Config {
   private final String FILE_PATH = "data/Config.txt";
 
-  public void savePath(String path) {
+  public void saveConfig(String path) {
     try (FileWriter writer = new FileWriter(FILE_PATH)) {
       writer.write(path);
     } catch (IOException e) {
@@ -18,7 +18,7 @@ public class Config {
     }
   }
 
-  public String loadPath() {
+  public String readConfig() {
     File file = new File(FILE_PATH);
     if (!file.exists()) {
       return null;
