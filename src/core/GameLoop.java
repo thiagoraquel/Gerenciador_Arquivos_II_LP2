@@ -78,9 +78,10 @@ public class GameLoop  {
      */
     public void initialize(){
         String path = config.readConfig(); // Lê texto (path) no config
+        
+        // Diretório/caminho inexiste em Config.txt
         if (path == null){  
             
-            // Primeira inicialização/diretório inexiste em Config.txt
             // Se o caminho está vazio, assume-se que é a primeira inicialização
             // E pede-se um path
             System.out.println("Config.txt is empty");
@@ -88,24 +89,40 @@ public class GameLoop  {
             String userInput = scanner.nextLine();
 
             File dir = new File(userInput); 
+            
+            // Se diretório dado por user não existe
             if (!dir.exists()) {
                 boolean success = dir.mkdirs();
+                // Cria um novo
                 if (success) {
+                    // Ir para biblioteca
                     System.out.println("Diretório criado com sucesso em: " + userInput);
-                    // Atualiza o Config.txt com o novo path
                     config.saveConfig(userInput);
                 } else {
                     System.out.println("Falha ao criar o diretório.");
                 }
-            } else {
+            } 
+
+            // Se diretório dado por user existe
+            else { 
+                // Ir para biblioteca
                 System.out.println("Diretório já existe: " + userInput);   
                 config.saveConfig(userInput);
             }
-        } else {    // Existe um path em Config.txt
+
+        } 
+
+        // Existe um path em Config.txt
+        else {    
             File dir = new File(path);
+
+            // Se path for um diretório válido
             if (dir.exists() && dir.isDirectory()) {
+                // Ir para biblioteca
                 System.out.println("Path at Config.txt: " + path);
-            } else {
+            } 
+            
+            else {
                 System.out.println("O diretório salvo em Config.txt não existe mais.");
                 System.out.print("Digite um path válido para criar um novo diretório: ");
                 String userInput = scanner.nextLine();
@@ -116,12 +133,14 @@ public class GameLoop  {
                 if (!newDir.exists()) {
                     boolean success = newDir.mkdirs();
                     if (success) {
+                        // Ir para biblioteca
                         System.out.println("Diretório criado com sucesso em: " + userInput);
                         config.saveConfig(userInput);
                     } else {
                         System.out.println("Falha ao criar o diretório.");
                     }
                 } else {
+                    // Ir para biblioteca
                     System.out.println("Diretório já existe: " + userInput);
                     config.saveConfig(userInput);
                 }
