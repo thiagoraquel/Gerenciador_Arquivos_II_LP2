@@ -3,9 +3,9 @@
 ## 📖 Descrição
 Este projeto é uma aplicação em Java que gerencia arquivos PDF por meio de uma interface de linha de comando. Ele permite que o usuário crie, edite, busque e exclua entradas de três tipos principais: **Livro**, **Nota de Aula** e **Slide**. Cada entrada contém metadados informados pelo usuário, e os arquivos PDF são organizados em uma estrutura de diretórios por autor.
 
-A aplicação segue o paradigma da programação orientada a objetos e é construída com uma **estrutura de Game Loop**, permitindo que o usuário interaja continuamente com o sistema até escolher sair. Os dados da biblioteca ativa são persistidos em um arquivo `.txt` na pasta `data/`.
+A aplicação segue o paradigma da programação orientada a objetos e é construída com uma [**arquitetura Game Loop**](https://gameprogrammingpatterns.com/game-loop.html), permitindo que o usuário interaja continuamente com o sistema até escolher sair. Os dados da biblioteca ativa são persistidos em um arquivo `.txt` na pasta `data/`.
 
-## ✨ Funcionalidades
+### Funcionalidades
 - Criação de entradas (livro, nota de aula, slide)
 - Organização por autor e tipo
 - Persistência via arquivo de texto
@@ -14,7 +14,31 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 - Suporte à alternância entre bibliotecas
 - Menu em terminal com navegação simples
 
-## 📁 Estrutura de Pastas
+## ✅ Implementação
+### Digaram de Estados
+[imgs/diagrama.png](imgs/diagrama.png)
+### To-Do
+Baseado nos estados acima:
+-[ ] Leitura do path das bibliotecas raiz existentes no metodo `void initialize()` da classe `GameLoop` - THIAGO
+-[ ] STARTING
+    -[ ] Exibir opçõe do MENU - JÚLIA
+    -[ ] Validar as entradas do _path_ - JÚLIA
+    -[ ] Instânciar um novo objeto `Library` e seus arquivos. - HEITOR
+    -[ ] Alterar o estado e validar fluxo do loop - JÚLIA
+-[ ] ROOT
+    -[ ] Exibir opçõe do MENU - JÚLIA
+    -[ ] Validar as entradas do _path_ - JÚLIA
+    -[ ] Operações da biblioteca (classe `Library`) - HEITOR
+    -[ ] Alterar o estado e validar fluxo do loop - JÚLIA
+ -[ ] DIRECTORY
+    -[ ] Exibir opçõe do MENU - JÚLIA
+    -[ ] Validar as entradas do _path_ - JÚLIA
+    -[ ] Operações dos arquivos (classe `File`)  - MARCOS
+    -[ ] Alterar o estado e validar fluxo do loop - JÚLIA
+-[ ] DELETE - JÚLIA
+-[ ] QUITTING - JÚLIA
+
+## 📁 Estrutura de Pastas - DESATUALIZADO
 ```
 Gerenciador_Arquivos/
 ├── src/                # Código-fonte em Java
@@ -29,7 +53,7 @@ Gerenciador_Arquivos/
 └── .gitignore          # Arquivos a serem ignorados no Git
 ```
 
-## ⚙️ Como Compilar e Executar
+## ⚙️ Como Compilar e Executar -DESATUALIZADO
 
 ### Pré-requisitos
 - Java 11 ou superior instalado
@@ -48,8 +72,6 @@ java -cp build app.Main
 ### 3. Alternativamente, use o script:
 ```bash
 ./run.sh
-```
-
 ```
 
 ## 👥 Autores
