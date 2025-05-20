@@ -50,7 +50,8 @@ public class GameLoop  {
     Vector<Library> libraries = new Vector<>(); // vetor com todas as bibliotecas raiz reconhecidas pelo programa
     Library library;                            // biblioteca que esta sendo acessada
     Config config = new Config();               // configuração de inicialização
-    private static final Scanner scanner = new Scanner(System.in);
+
+    private static final Scanner scanner = new Scanner(System.in); // Entrada do terminal
 
     // fechar o scanner
     // obs: só fechar quando o programa terminar
@@ -64,25 +65,19 @@ public class GameLoop  {
         state = e_states.STARTING;
     }
 
-    /**
-     * Controle do loop
-    * 
-    * @return variável booleana
-    */
-    public boolean is_over() {
-        return end_loop;
-    }
+
 
     /**
      * Inicialização sem argumentos no terminal
      */
     public void initialize(){
-        String path = config.readConfig(); // Lê texto (path) no config
+        String path = config.readLastLibrary(); // Lê texto (path) no config
         
         // Diretório/caminho inexiste em Config.txt
         if (path == null){  
             
             // Se o caminho está vazio, assume-se que é a primeira inicialização
+            // Ou seja, Config.txt sempre deve ter a última biblioteca, exceto na primeira init
             // E pede-se um path
             System.out.println("Config.txt is empty");
             System.out.print("Digite um path válido para criar um diretório: ");
@@ -97,7 +92,8 @@ public class GameLoop  {
                 if (success) {
                     // Ir para biblioteca
                     System.out.println("Diretório criado com sucesso em: " + userInput);
-                    config.saveConfig(userInput);
+                    config.saveLastLibrary(userInput);
+                    config.addLibrary(userInput);
                 } else {
                     System.out.println("Falha ao criar o diretório.");
                 }
@@ -107,7 +103,7 @@ public class GameLoop  {
             else { 
                 // Ir para biblioteca
                 System.out.println("Diretório já existe: " + userInput);   
-                config.saveConfig(userInput);
+                config.saveLastLibrary(userInput);
             }
 
         } 
@@ -119,6 +115,7 @@ public class GameLoop  {
             // Se path for um diretório válido
             if (dir.exists() && dir.isDirectory()) {
                 // Ir para biblioteca
+                config.saveLastLibrary(path);
                 System.out.println("Path at Config.txt: " + path);
             } 
             
@@ -133,16 +130,17 @@ public class GameLoop  {
                 if (!newDir.exists()) {
                     boolean success = newDir.mkdirs();
                     if (success) {
-                        // Ir para biblioteca
+                        // Cria um novo e vai para a biblioteca
                         System.out.println("Diretório criado com sucesso em: " + userInput);
-                        config.saveConfig(userInput);
+                        config.saveLastLibrary(userInput);
+                        config.addLibrary(userInput);
                     } else {
                         System.out.println("Falha ao criar o diretório.");
                     }
                 } else {
                     // Ir para biblioteca
                     System.out.println("Diretório já existe: " + userInput);
-                    config.saveConfig(userInput);
+                    config.saveLastLibrary(userInput);
                 }
             }
         }  
@@ -153,7 +151,7 @@ public class GameLoop  {
     */
     public void initialize(String string){
         // Carrega todos os diretórios salvos na pasta DATA no vector LIBRARY
-        String path = config.readConfig();
+        String path = config.readLastLibrary();
         if (path == null){  // Primeira inicialização/diretório inexiste em Config.txt
             System.out.println("Config.txt is empty");  
         } else if (path != null){
@@ -261,5 +259,14 @@ public class GameLoop  {
         } else if (state == e_states.QUITTING) {
             
         }
+    }
+
+    /**
+     * Controle do loop
+    * 
+    * @return variável booleana
+    */
+    public boolean is_over() {
+        return end_loop;
     }
 }
