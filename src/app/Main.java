@@ -16,7 +16,7 @@ public class Main {
             return;
         }
 
-        // Comentado para testes
+        // Comentado para teste
         //while (loop.is_over()) {
             loop.process_event();
             loop.update();
