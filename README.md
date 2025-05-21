@@ -61,12 +61,12 @@ Gerenciador_Arquivos/
 
 ### 1. Compilar
 ```bash
-javac -d build src/app/Main.java src/core/*.java src/utils/*.java
+javac -cp "libs/gson-2.9.1.jar" -d build src/app/Main.java src/core/*.java src/utils/*.java
 ```
 
 ### 2. Executar
 ```bash
-java -cp build app.Main
+java -cp "libs/gson-2.9.1.jar;build" app.Main
 ```
 
 ### 3. Alternativamente, use o script no git bash:

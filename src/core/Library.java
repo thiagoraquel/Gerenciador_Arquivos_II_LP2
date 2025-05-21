@@ -22,15 +22,26 @@ public class Library {
 
     public Library(String path) {
         this.path = path;
+      
+        // Criar os subdiretórios se ainda não existirem
+        String[] subdirs = { "Livros", "NotasDeAulas", "Slides" };
+        for (String dirName : subdirs) {
+            File subdir = new File(path, dirName);
+            if (!subdir.exists()) {
+                subdir.mkdirs(); // cria diretório (e pais, se necessário)
+            }
+        }
+      
+        // Carregar os diretórios da biblioteca
         File folder = new File(path);
         File[] files = folder.listFiles();
-    
+      
         if (files != null) {
-          for (File file : files) {
+            for (File file : files) {
                 if (file.isDirectory()) {
                     directories.add(new Directory(file.getAbsolutePath()));
                 }
-          }
+            }
         }
     }
     
