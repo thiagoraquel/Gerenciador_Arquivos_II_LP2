@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         GameLoop loop = new GameLoop();
         
-        if (args.length == 0) { // Programa roda apenas com zero argumentos
+        if (args.length == 0) { // Programa inicia apenas com zero argumentos
             loop.initialize();
         } else {
             System.out.println(

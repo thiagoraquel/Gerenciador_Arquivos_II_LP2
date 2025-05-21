@@ -11,29 +11,6 @@ import java.util.List;
 
 public class Config {
   private final String VALID_LIBS_FILE = "data/ValidLibraries.txt";
-  private final String LAST_LIBRARY_FILE = "data/LastLibrary.txt";
-
-  public void saveLastLibrary(String path) {
-    try (FileWriter writer = new FileWriter(LAST_LIBRARY_FILE)) {
-      writer.write(path);
-    } catch (IOException e) {
-      System.out.println("Erro ao salvar o path.");
-      e.printStackTrace();
-    }
-  }
-
-  public String readLastLibrary() {
-    File file = new File(LAST_LIBRARY_FILE);
-    if (!file.exists()) {
-      return null;
-    }
-    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-      return reader.readLine();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
 
   // Adiciona uma nova biblioteca (sem duplicar)
   public void addLibrary(String path) {
@@ -70,7 +47,7 @@ public class Config {
   }
 
   // Lê todos os diretórios válidos
-  public List<String> readValidDirectories() {
+  public List<String> getDirectoriesNames() {
     List<String> directories = new ArrayList<>();
     File file = new File(VALID_LIBS_FILE);
     if (!file.exists()) {
@@ -87,5 +64,45 @@ public class Config {
     }
 
     return directories;
+  }
+
+  // Imprime todas as bibliotecas registradas no arquivo
+  public void printLibraries() {
+    List<String> libraries = getDirectoriesNames();
+
+    if (libraries.isEmpty()) {
+      System.out.println("Nenhuma biblioteca registrada.");
+      return;
+    }
+
+    System.out.println("Bibliotecas registradas:");
+    for (String lib : libraries) {
+      System.out.println("- " + lib);
+    }
+  }
+
+  public void removeInvalidLibraries() {
+    List<String> allLibs = getDirectoriesNames();
+    List<String> validLibs = new ArrayList<>();
+  
+    for (String lib : allLibs) {
+      File dir = new File(lib);
+      if (dir.exists() && dir.isDirectory()) {
+        validLibs.add(lib);
+      } else {
+        System.out.println("Removendo biblioteca inválida: " + lib);
+      }
+    }
+  
+    // Sobrescreve o arquivo com apenas os diretórios válidos
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/ValidLibraries.txt"))) {
+      for (String lib : validLibs) {
+        writer.write(lib);
+        writer.newLine();
+      }
+    } catch (IOException e) {
+      System.out.println("Erro ao atualizar bibliotecas válidas.");
+      e.printStackTrace();
+    }
   }
 }

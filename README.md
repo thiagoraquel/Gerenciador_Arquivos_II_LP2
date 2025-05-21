@@ -19,7 +19,7 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 ![Diagrama de Estados](imgs/diagrama.png)
 ### To-Do
 - [x] Base do projeto - JÚLIA
-- [ ] Leitura do path das bibliotecas raiz existentes no metodo `void initialize()` da classe `GameLoop` - THIAGO
+- [x] Leitura do path das bibliotecas raiz existentes no metodo `void initialize()` da classe `GameLoop` - THIAGO
 - [ ] STARTING
     - [ ] Exibir opçõe do MENU - JÚLIA
     - [ ] Validar as entradas do _path_ - JÚLIA
@@ -61,7 +61,7 @@ Gerenciador_Arquivos/
 
 ### 1. Compilar
 ```bash
-javac -d build src/**/*.java
+javac -d build src/app/Main.java src/core/*.java src/utils/*.java
 ```
 
 ### 2. Executar
@@ -69,7 +69,7 @@ javac -d build src/**/*.java
 java -cp build app.Main
 ```
 
-### 3. Alternativamente, use o script:
+### 3. Alternativamente, use o script no git bash:
 ```bash
 ./run.sh
 ```

@@ -3,6 +3,8 @@ package core;
 import core.Library;
 import core.Config;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
 import java.io.File;  
@@ -63,99 +65,60 @@ public class GameLoop  {
     */
     public GameLoop() {
         state = e_states.STARTING;
+        libraries.clear();
     }
 
-
-
-    /**
-     * Inicialização sem argumentos no terminal
-     */
     public void initialize(){
-        String path = config.readLastLibrary(); // Lê texto (path) no config
-        
-        // Diretório/caminho inexiste em Config.txt
-        if (path == null){  
-            
-            // Se o caminho está vazio, assume-se que é a primeira inicialização
-            // Ou seja, Config.txt sempre deve ter a última biblioteca, exceto na primeira init
-            // E pede-se um path
-            System.out.println("Config.txt is empty");
-            System.out.print("Digite um path válido para criar um diretório: ");
-            String userInput = scanner.nextLine();
+        // Lê nomes dos diretórios no file
+        List<String> libs_on_file = config.getDirectoriesNames();
+        // Ver quais bibliotecas estão no arquivo
+        config.printLibraries();
 
+        // Se o ValidLibraries.txt está vazio, assume-se que é a primeira inicialização
+        // Ou seja, ValidLibraries.txt sempre tem ao menos uma biblioteca, exceto na primeira init
+        if (libs_on_file.isEmpty()) {
+            System.out.print(
+            "Não existe nenhuma biblioteca válida existente\n" + 
+            "Digite um nome válido para criar uma biblioteca: ");
+            
+            String userInput = scanner.nextLine();
             File dir = new File(userInput); 
             
-            // Se diretório dado por user não existe
+            // Se diretório dado por usuário não existe
             if (!dir.exists()) {
                 boolean success = dir.mkdirs();
-                // Cria um novo
+                // Cria uma nova biblioteca
                 if (success) {
-                    // Ir para biblioteca
-                    System.out.println("Diretório criado com sucesso em: " + userInput);
-                    config.saveLastLibrary(userInput);
                     config.addLibrary(userInput);
                 } else {
                     System.out.println("Falha ao criar o diretório.");
                 }
             } 
 
-            // Se diretório dado por user existe
+            // Se nome de diretório dado por user existe
             else { 
-                // Ir para biblioteca
-                System.out.println("Diretório já existe: " + userInput);   
-                config.saveLastLibrary(userInput);
+                // TODO: Nome de primeira biblioteca já existe
+                // Perguntar por nome da biblioteca até que user dê um nome que ainda não foi usado
+                System.out.println("Diretório já existe, crie um diretório com um nome diferente: ");   
+               
             }
+        } else {
+            // Já existem nomes de bibliotecas no ValidLibraries.txt
+            // Espera-se que sejam nomes de diretórios válidos
+            // O programa apenas faz bibliotecas válidas no ValidLibraries
+            // Ou seja, não deve tratar nada aqui
+        }
 
-        } 
+        // Verificar se os nomes em ValidLibraries.txt são válidos (existem e são diretórios)
+        config.removeInvalidLibraries();
 
-        // Existe um path em Config.txt
-        else {    
-            File dir = new File(path);
-
-            // Se path for um diretório válido
-            if (dir.exists() && dir.isDirectory()) {
-                // Ir para biblioteca
-                config.saveLastLibrary(path);
-                System.out.println("Path at Config.txt: " + path);
-            } 
-            
-            else {
-                System.out.println("O diretório salvo em Config.txt não existe mais.");
-                System.out.print("Digite um path válido para criar um novo diretório: ");
-                String userInput = scanner.nextLine();
-          
-                // obs: este código é o mesmo código do primeiro if da função initialize()
-                // Redundância
-                File newDir = new File(userInput);
-                if (!newDir.exists()) {
-                    boolean success = newDir.mkdirs();
-                    if (success) {
-                        // Cria um novo e vai para a biblioteca
-                        System.out.println("Diretório criado com sucesso em: " + userInput);
-                        config.saveLastLibrary(userInput);
-                        config.addLibrary(userInput);
-                    } else {
-                        System.out.println("Falha ao criar o diretório.");
-                    }
-                } else {
-                    // Ir para biblioteca
-                    System.out.println("Diretório já existe: " + userInput);
-                    config.saveLastLibrary(userInput);
-                }
-            }
-        }  
-    }
-
-    /**
-     * Carrega os diretórios raiz criados (biblioteca)
-    */
-    public void initialize(String string){
-        // Carrega todos os diretórios salvos na pasta DATA no vector LIBRARY
-        String path = config.readLastLibrary();
-        if (path == null){  // Primeira inicialização/diretório inexiste em Config.txt
-            System.out.println("Config.txt is empty");  
-        } else if (path != null){
-            System.out.println("Path at Config.txt: " + path);
+        // Adicionar os paths das bibliotecas no ValidLibraries.txt ao vetor de bibliotecas
+        List<String> validLibPaths = config.getDirectoriesNames();
+        for (String lib : validLibPaths) {
+            // File dir = new File(lib);
+            //if (dir.exists() && dir.isDirectory()) {
+                // libraries.add(new Library(lib));
+            //}
         }
     }
 
