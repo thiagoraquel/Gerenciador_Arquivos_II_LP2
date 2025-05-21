@@ -17,11 +17,11 @@ public class Main {
         }
 
         // Comentado para testes
-        /*while (loop.is_over()) {
+        //while (loop.is_over()) {
             loop.process_event();
             loop.update();
             loop.render();
-        }*/
+        //}
         loop.close_scanner();
     }
 }

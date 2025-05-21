@@ -114,11 +114,9 @@ public class GameLoop  {
 
         // Adicionar os paths das bibliotecas no ValidLibraries.txt ao vetor de bibliotecas
         List<String> validLibPaths = config.getDirectoriesNames();
-        for (String lib : validLibPaths) {
-            // File dir = new File(lib);
-            //if (dir.exists() && dir.isDirectory()) {
-                // libraries.add(new Library(lib));
-            //}
+        for (String libPath : validLibPaths) {
+            Library lib = new Library(libPath);
+            libraries.add(lib);
         }
     }
 

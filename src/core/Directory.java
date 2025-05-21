@@ -1,9 +1,12 @@
 package core;
 
-import core.File;
+import core.Entry;
 
+import java.io.File;
+import java.io.FileReader;
 import java.lang.String;
 import java.util.Vector;
+import com.google.gson.Gson;
 
 /**
  * Sobdiretório de arquivos PDF
@@ -13,13 +16,38 @@ import java.util.Vector;
  */
 
 public class Directory {
-    // TODO: Atributos
-    Vector<File> files = new Vector<>();
+    Vector<Entry> files = new Vector<>();
+    String path;
 
-    /**
-     * Construtor
-     */
-    public Directory() {}
+    public Directory(String path) {
+        this.path = path;
+
+        File folder = new File(path);
+        File[] fileList = folder.listFiles();
+
+        if (fileList != null) {
+            for (File file : fileList) {
+                if (file.isFile() && file.getName().endsWith(".json")) {
+                    try {
+                        Gson gson = new Gson();
+                        FileReader reader = new FileReader(file);
+                        Entry entry = gson.fromJson(reader, Entry.class);
+                        reader.close();
+
+                        files.add(entry);
+                    } catch (Exception e) {
+                        System.err.println("Erro ao ler JSON: " + file.getName());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+  
+    // Você pode adicionar getters aqui se quiser expor os dados
+    public String getPath() {
+      return path;
+    }
 
      /**
      * Cria um novo aquivo no diretório

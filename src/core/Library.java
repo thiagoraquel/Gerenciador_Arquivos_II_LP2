@@ -2,6 +2,7 @@ package core;
 
 import utils.Database;
 import core.Directory;
+import java.io.File;  
 
 import java.lang.String;
 import java.util.Vector;
@@ -19,10 +20,23 @@ public class Library {
     Vector<Directory> directories = new Vector<>();
     String path;           // Caminho do diretório raiz do sistema de gerenciamento
 
-    /**
-     * Construtor
-     */
-    public Library() {}
+    public Library(String path) {
+        this.path = path;
+        File folder = new File(path);
+        File[] files = folder.listFiles();
+    
+        if (files != null) {
+          for (File file : files) {
+                if (file.isDirectory()) {
+                    directories.add(new Directory(file.getAbsolutePath()));
+                }
+          }
+        }
+    }
+    
+    public String getPath() {
+        return path;
+    }
 
     /**
      * Organiza os arquivos em diretórios por tipo ou nome de autores
