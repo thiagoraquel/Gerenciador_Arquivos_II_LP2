@@ -106,7 +106,7 @@ public class GameLoop  {
             // Já existem nomes de bibliotecas no ValidLibraries.txt
             // Espera-se que sejam nomes de diretórios válidos
             // O programa apenas faz bibliotecas válidas no ValidLibraries
-            // Ou seja, não deve tratar nada aqui
+            // Ou seja, não deve tratar nada aqui (por enquanto)
         }
 
         // Verificar se os nomes em ValidLibraries.txt são válidos (existem e são diretórios)
