@@ -21,6 +21,7 @@ public class Directory {
 
     public Directory(String path) {
         this.path = path;
+        System.out.println("Path do Subdiretório: " + path);
 
         File folder = new File(path);
         File[] fileList = folder.listFiles();

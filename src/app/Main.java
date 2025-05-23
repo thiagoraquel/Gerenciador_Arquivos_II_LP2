@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         GameLoop loop = new GameLoop();
         
-        if (args.length == 0) { // Programa inicia apenas com zero argumentos
+        if (args.length == 0) {
             loop.initialize();
         } else {
             System.out.println(
@@ -16,12 +16,11 @@ public class Main {
             return;
         }
 
-        // Comentado para teste
-        //while (loop.is_over()) {
+        while (!loop.is_over()) {
             loop.process_event();
             loop.update();
             loop.render();
-        //}
+        }
         loop.close_scanner();
     }
 }

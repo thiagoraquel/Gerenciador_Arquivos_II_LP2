@@ -22,7 +22,6 @@ public class GameLoop  {
         STARTING,
         LIBRARY,
         DIRECTORY,
-        DELETE,
         QUITTING
     }
 
@@ -53,7 +52,8 @@ public class GameLoop  {
     Library library;                            // biblioteca que esta sendo acessada
     Config config = new Config();               // configuração de inicialização
 
-    private static final Scanner scanner = new Scanner(System.in); // Entrada do terminal
+    int entrada;                                // Entrada do terminal
+    private static final Scanner scanner = new Scanner(System.in); // Scanner do terminal
 
     // fechar o scanner
     // obs: só fechar quando o programa terminar
@@ -72,7 +72,7 @@ public class GameLoop  {
         // Lê nomes dos diretórios no file
         List<String> libs_on_file = config.getDirectoriesNames();
         // Ver quais bibliotecas estão no arquivo
-        config.printLibraries();
+        // config.printLibraries();
 
         // Se o ValidLibraries.txt está vazio, assume-se que é a primeira inicialização
         // Ou seja, ValidLibraries.txt sempre tem ao menos uma biblioteca, exceto na primeira init
@@ -130,7 +130,7 @@ public class GameLoop  {
             // Solicita operação de E_OP_LIBRARY e armazena ela em OP_LIBRARY
         } else if (state == e_states.DIRECTORY) {
             // Solicita operação de E_OP_FILE e armazena ela em OP_FILE
-        } else if (state == e_states.DELETE) {
+
             
         } else if (state == e_states.QUITTING) {
             
@@ -183,7 +183,7 @@ public class GameLoop  {
             } else {
                     // Exibe mensagem de erro e não altera o estado
             }
-        } else if (state == e_states.DELETE) {
+
             
         } else if (state == e_states.QUITTING) {
             
@@ -195,10 +195,37 @@ public class GameLoop  {
     */
     public void render() {
         if (state == e_states.STARTING) {
-            // Se o estado ainda for STARTING significa que o repositório informado foi inválido
-            // Exibe mensagem de erro
+            config.printLibraries();
+
+            System.out.println("Escolha uma opção:");
+            System.out.println("1. Acessar biblioteca existente");
+            System.out.println("2. Criar nova biblioteca");
+            System.out.print("Opção: ");
+
+            entrada = scanner.nextInt();
+
+            switch (entrada) {
+                case 1:
+                    System.out.println("Você escolheu acessar biblioteca existente.");
+                    System.out.println("Escolha uma das bibliotecas existentes:\n");
+                    state = e_states.LIBRARY;
+                    break;
+                case 2:
+                    System.out.println("Você escolheu criar nova biblioteca.\n");
+                    state = e_states.STARTING;
+                    break;
+                default:
+                    System.out.println("Opção inválida.\n");
+            }
         } else if (state == e_states.LIBRARY) {
             // Exibe todos os diretórios da biblioteca
+            library = libraries.firstElement();
+            System.out.println("Path da biblioteca:");
+            System.out.println(library.getPath());
+            for (String dirPath : library.getDirectoriesPaths()) {
+                System.out.println("- " + dirPath);
+            }
+            // método que mostra os diretórios
             /* Exibe menu de opções:
                 1) Entrar em um subdiretório
                 2) Buscar arquivos
@@ -206,6 +233,29 @@ public class GameLoop  {
                 4) Deletar
                 5) Sair
             */
+
+            System.out.println("Escolha uma opção:");
+            System.out.println("1. Acessar subdiretório");
+            System.out.println("2. Buscar Arquivos");
+            System.out.println("3. Deletar Biblioteca");
+            System.out.println("4. Sair");
+            System.out.print("Opção: ");
+
+            entrada = scanner.nextInt();
+
+            switch (entrada) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                state = e_states.QUITTING;
+                    break;
+                default:
+                    System.out.println("Opção inválida.\n");
+            }
         } else if (state == e_states.DIRECTORY) {
             // Exibe todos os arquivos de um diretório
             /* Exibe o menu de opções:
@@ -215,7 +265,6 @@ public class GameLoop  {
                 4) Mover arquivo 
                 5) Voltar para diretorio raiz
             */
-        } else if (state == e_states.DELETE) {
             
         } else if (state == e_states.QUITTING) {
             

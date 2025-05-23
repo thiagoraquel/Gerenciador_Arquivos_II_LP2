@@ -39,7 +39,7 @@ public class Library {
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    directories.add(new Directory(file.getAbsolutePath()));
+                    directories.add(new Directory(file.getPath()));
                 }
             }
         }
@@ -48,6 +48,14 @@ public class Library {
     public String getPath() {
         return path;
     }
+
+    public Vector<String> getDirectoriesPaths() {
+        Vector<String> paths = new Vector<>();
+        for (Directory dir : directories) {
+          paths.add(dir.getPath()); // supondo que a classe Directory tem um método getPath()
+        }
+        return paths;
+      }
 
     /**
      * Organiza os arquivos em diretórios por tipo ou nome de autores
