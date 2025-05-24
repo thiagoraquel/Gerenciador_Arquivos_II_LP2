@@ -71,10 +71,14 @@ public class Library {
         return path;
     }
 
+    public Vector<Directory> getDirectories() {
+        return directories;
+    }
+
     public Vector<String> getDirectoriesPaths() {
         Vector<String> paths = new Vector<>();
         for (Directory dir : directories) {
-          paths.add(dir.getPath()); // supondo que a classe Directory tem um método getPath()
+          paths.add(dir.getPath());
         }
         return paths;
       }
