@@ -186,7 +186,7 @@ public class GameLoop  {
                     int indice = scanner.nextInt();
 
                     if (indice >= 1 && indice <= libraries.size()) {
-                        library = libraries.get(indice);
+                        library = libraries.get(indice - 1);
                         System.out.println("Biblioteca selecionada: " + library.getPath());
                         System.out.print("\n");
                         // Continue o programa com a biblioteca escolhida
