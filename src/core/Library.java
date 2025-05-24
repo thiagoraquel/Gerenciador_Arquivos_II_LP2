@@ -2,9 +2,10 @@ package core;
 
 import utils.Database;
 import core.Directory;
-import java.io.File;  
-
+import java.io.File;
+import java.io.IOException;
 import java.lang.String;
+import java.util.Scanner;
 import java.util.Vector;
 
 /**
@@ -19,9 +20,11 @@ public class Library {
     // TODO: atributos
     Vector<Directory> directories = new Vector<>();
     String path;           // Caminho do diretório raiz do sistema de gerenciamento
+    Scanner scanner;
 
-    public Library(String path) {
+    public Library(String path, Scanner scanner) {
         this.path = path;
+        this.scanner = scanner;
       
         // Criar os subdiretórios se ainda não existirem
         String[] subdirs = { "Livros", "NotasDeAulas", "Slides" };
@@ -39,10 +42,29 @@ public class Library {
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    directories.add(new Directory(file.getPath()));
-                }
+                    directories.add(new Directory(file.getPath(), scanner));                }
             }
         }
+    }
+
+     /**
+   * Para delegar a criação de uma nova Entry, basta escolher
+   * qual subdiretório usar e chamar o addEntry dele.
+   */
+    public void addEntry(String pdfSourcePath, String subdirName) {
+        // procura o Directory correspondente
+        for (Directory d : directories) {
+            if (new File(d.getPath()).getName().equals(subdirName)) {
+                try {
+                    d.addEntry(pdfSourcePath);
+                } catch (IOException e) {
+                    System.err.println("Falha ao adicionar entry: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                return;
+            }
+        }
+        System.err.println("Subdiretório não encontrado: " + subdirName);
     }
     
     public String getPath() {

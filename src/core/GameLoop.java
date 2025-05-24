@@ -48,9 +48,10 @@ public class GameLoop  {
     Vector<Library> libraries = new Vector<>(); // vetor com todas as bibliotecas raiz reconhecidas pelo programa
     Library library;                            // biblioteca que esta sendo acessada
     Config config = new Config();               // configuração de inicialização
+    String Current_Subdir;                        // Atual subdiretório
 
     int entrada;                                // Entrada do terminal
-    private static final Scanner scanner = new Scanner(System.in); // Scanner do terminal
+    public static final Scanner scanner = new Scanner(System.in); // Scanner do terminal
 
     // fechar o scanner
     // obs: só fechar quando o programa terminar
@@ -113,7 +114,7 @@ public class GameLoop  {
         // Adicionar os paths das bibliotecas no ValidLibraries.txt ao vetor de bibliotecas
         List<String> validLibPaths = config.getDirectoriesNames();
         for (String libPath : validLibPaths) {
-            Library lib = new Library(libPath);
+            Library lib = new Library(libPath, scanner);
             libraries.add(lib);
         }
     }
@@ -133,7 +134,7 @@ public class GameLoop  {
             if (op_library == e_op_library.OPEN_DIRECTORY) {
                 state = e_states.DIRECTORY;
 
-            //} else if (op_library == e_op_library.D) {
+            //} else if (op_library == e_op_library.DELETE) {
                 //state = e_states.QUITTING;
             } else {
                     // Exibe mensagem de erro e não altera o estado
@@ -170,7 +171,25 @@ public class GameLoop  {
             switch (entrada) {
                 case 1:
                     System.out.println("Você escolheu acessar biblioteca existente.");
-                    System.out.println("Escolha uma das bibliotecas existentes:\n");
+                    System.out.println("Escolha uma das bibliotecas existentes:");
+
+                    for (int i = 0; i < libraries.size(); i++) {
+                        Library lib = libraries.get(i);
+                        System.out.println(i + " - " + lib.getPath()); // ou lib.toString(), se você sobrescreveu
+                    }
+
+                    System.out.print("Digite o número da biblioteca: ");
+                    int indice = scanner.nextInt();
+                    scanner.nextLine(); // consome o \n
+
+                    if (indice >= 0 && indice < libraries.size()) {
+                        library = libraries.get(indice);
+                        System.out.println("Biblioteca selecionada: " + library.getPath());
+                        // Continue o programa com a biblioteca escolhida
+                    } else {
+                        System.out.println("Índice inválido.");
+                    }
+
                     state = e_states.LIBRARY;
                     break;
                 case 2:
@@ -204,6 +223,14 @@ public class GameLoop  {
                 case 1:
                     System.out.println("Você escolheu acessar subdiretório");
                     state = e_states.DIRECTORY;
+
+                    System.out.print("Escolha qual subdiretório você quer acessar:: ");
+                    System.out.print("1. Livros");
+                    System.out.print("2. NotasDeAulas");
+                    System.out.print("3. Slides");
+
+                    System.out.print("Digite o tipo de entrada (Livros, NotasDeAulas ou Slides): ");
+                    //String tipoEntrada = scanner.nextLine();
                     break;
                 case 2:
                     System.out.println("Você escolheu buscar arquivos");
@@ -215,7 +242,7 @@ public class GameLoop  {
                     break;
                 case 4:
                     System.out.println("Você escolheu deletar biblioteca");
-                    state = e_states.STARTING;
+                    op_library = e_op_library.DELETE;
                     break;
                 case 5:
                     System.out.println("Você escolheu sair do programa.");
@@ -231,7 +258,6 @@ public class GameLoop  {
             System.out.println("2. Editar arquivo");
             System.out.println("3. Deletar arquivo");
             System.out.println("4. Voltar para biblioteca");
-            System.out.println("5. Sair");
             System.out.print("Opção: ");
 
             entrada = scanner.nextInt();
@@ -239,6 +265,22 @@ public class GameLoop  {
             switch (entrada) {
                 case 1:
                     System.out.println("Você escolheu adicionar arquivos");
+
+                    System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
+                    scanner.nextLine(); // consumir a quebra de linha pendente
+                    String caminhoPdf = scanner.nextLine();
+
+                    System.out.print("Digite o tipo de entrada (Livros, NotasDeAulas ou Slides): ");
+                    String tipoEntrada = scanner.nextLine();
+
+                    if (!tipoEntrada.equals("Livros") &&
+                        !tipoEntrada.equals("NotasDeAulas") &&
+                        !tipoEntrada.equals("Slides")) {
+                    System.out.println("Tipo inválido. Use exatamente: Livros, NotasDeAulas ou Slides.");
+                    break;
+                    }
+
+                    library.addEntry(caminhoPdf, tipoEntrada);
                     break;
                 case 2:
                     System.out.println("Você escolheu editar arquivos");
@@ -248,9 +290,7 @@ public class GameLoop  {
                     break;
                 case 4:
                     System.out.println("Você escolheu voltar para biblioteca");
-                    break;
-                case 5:
-                    System.out.println("Você escolheu sair.");
+                    state = e_states.LIBRARY;
                     break;
                 default:
                     System.out.println("Opção inválida.\n");
