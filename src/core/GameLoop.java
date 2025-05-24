@@ -29,9 +29,7 @@ public class GameLoop  {
     private enum e_op_library {
         OPEN_DIRECTORY,
         SEARCH_FILE,
-        ORGANIZATION,
-        DELETE,
-        QUIT
+        DELETE
     }
 
     // Operações de Arquivos
@@ -39,7 +37,6 @@ public class GameLoop  {
         CREATE,
         DELETE,
         EDIT,
-        MOVE, 
         BACK_TO_LIBRARY
     }
 
@@ -60,6 +57,7 @@ public class GameLoop  {
     public void close_scanner() {
         scanner.close();
     }
+
     /**
      * Construtor
     */
@@ -120,47 +118,23 @@ public class GameLoop  {
         }
     }
 
-    /**
-     * Recebe as entradas do usuário
-    */
     public void process_event() {
         if (state == e_states.STARTING) {
             // Pede para o usuário informar o nome do repositório que é a biblioteca raiz
-        } else if (state == e_states.LIBRARY) {
-            // Solicita operação de E_OP_LIBRARY e armazena ela em OP_LIBRARY
-        } else if (state == e_states.DIRECTORY) {
-            // Solicita operação de E_OP_FILE e armazena ela em OP_FILE
-
-            
         } else if (state == e_states.QUITTING) {
-            
+            end_loop = true;
         }
     }
 
-    /**
-     * Atualiza o estado do sistema
-    */
     public void update() {
         if (state == e_states.STARTING) {
-            // Verifica se o repositório informado é válido: busca no vector LIBRARY
-            // Se existir muda o estado para STARTING
-            // Senão não altera o estado
+
         } else if (state == e_states.LIBRARY) {
-            // Verifica se a operação de OP_LIBRARY é válida
             if (op_library == e_op_library.OPEN_DIRECTORY) {
                 state = e_states.DIRECTORY;
 
-            } else if (op_library == e_op_library.SEARCH_FILE) {
-                // chama método de LIBRARY
-
-            } else if (op_library == e_op_library.ORGANIZATION) {
-                // chama método de LIBRARY
-
-            } else if (op_library == e_op_library.DELETE) {
-                // exclui a biblioteca atual da lista de bibliotecas
-
-            } else if (op_library == e_op_library.QUIT) {
-                state = e_states.QUITTING;
+            //} else if (op_library == e_op_library.D) {
+                //state = e_states.QUITTING;
             } else {
                     // Exibe mensagem de erro e não altera o estado
             }
@@ -169,22 +143,11 @@ public class GameLoop  {
             if (op_file == e_op_file.CREATE) {
                 // chama método de DIRECTORY
 
-            } else if (op_file == e_op_file.EDIT) {
-                // chama método de DIRECTORY
-
-            } else if (op_file == e_op_file.MOVE) {
-                // chama método de LIBRARY
-
-            } else if (op_file == e_op_file.DELETE) {
-                // chama método de DIRECTORY
-
             } else if (op_file == e_op_file.BACK_TO_LIBRARY) {
                 state = e_states.LIBRARY;
             } else {
                     // Exibe mensagem de erro e não altera o estado
             }
-
-            
         } else if (state == e_states.QUITTING) {
             
         }
@@ -218,56 +181,80 @@ public class GameLoop  {
                     System.out.println("Opção inválida.\n");
             }
         } else if (state == e_states.LIBRARY) {
-            // Exibe todos os diretórios da biblioteca
             library = libraries.firstElement();
             System.out.println("Path da biblioteca:");
             System.out.println(library.getPath());
+
+            System.out.println("Paths dos subdiretórios:");
             for (String dirPath : library.getDirectoriesPaths()) {
                 System.out.println("- " + dirPath);
             }
-            // método que mostra os diretórios
-            /* Exibe menu de opções:
-                1) Entrar em um subdiretório
-                2) Buscar arquivos
-                3) Alterar organização biblioteca
-                4) Deletar
-                5) Sair
-            */
 
             System.out.println("Escolha uma opção:");
             System.out.println("1. Acessar subdiretório");
             System.out.println("2. Buscar Arquivos");
-            System.out.println("3. Deletar Biblioteca");
-            System.out.println("4. Sair");
+            System.out.println("3. Trocar Biblioteca");
+            System.out.println("4. Deletar Biblioteca");
+            System.out.println("5. Sair");
             System.out.print("Opção: ");
 
             entrada = scanner.nextInt();
 
             switch (entrada) {
                 case 1:
+                    System.out.println("Você escolheu acessar subdiretório");
+                    state = e_states.DIRECTORY;
                     break;
                 case 2:
+                    System.out.println("Você escolheu buscar arquivos");
+                    state = e_states.LIBRARY;
                     break;
                 case 3:
+                    System.out.println("Você escolheu trocar biblioteca");
+                    state = e_states.STARTING;
                     break;
                 case 4:
-                state = e_states.QUITTING;
+                    System.out.println("Você escolheu deletar biblioteca");
+                    state = e_states.STARTING;
+                    break;
+                case 5:
+                    System.out.println("Você escolheu sair do programa.");
+                    state = e_states.QUITTING;
                     break;
                 default:
                     System.out.println("Opção inválida.\n");
             }
+
         } else if (state == e_states.DIRECTORY) {
-            // Exibe todos os arquivos de um diretório
-            /* Exibe o menu de opções:
-                1) Adicionar arquivo
-                2) Deletar arquivo
-                3) Editar informações do arquivo
-                4) Mover arquivo 
-                5) Voltar para diretorio raiz
-            */
-            
-        } else if (state == e_states.QUITTING) {
-            
+            System.out.println("Escolha uma opção:");
+            System.out.println("1. Adicionar arquivos");
+            System.out.println("2. Editar arquivo");
+            System.out.println("3. Deletar arquivo");
+            System.out.println("4. Voltar para biblioteca");
+            System.out.println("5. Sair");
+            System.out.print("Opção: ");
+
+            entrada = scanner.nextInt();
+
+            switch (entrada) {
+                case 1:
+                    System.out.println("Você escolheu adicionar arquivos");
+                    break;
+                case 2:
+                    System.out.println("Você escolheu editar arquivos");
+                    break;
+                case 3:
+                    System.out.println("Você escolheu deletar arquivo");
+                    break;
+                case 4:
+                    System.out.println("Você escolheu voltar para biblioteca");
+                    break;
+                case 5:
+                    System.out.println("Você escolheu sair.");
+                    break;
+                default:
+                    System.out.println("Opção inválida.\n");
+            }
         }
     }
 
