@@ -20,23 +20,23 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 ### To-Do
 - [x] Base do projeto - JÚLIA
 - [x] Leitura do path das bibliotecas raiz existentes no metodo `void initialize()` da classe `GameLoop` - THIAGO
-- [ ] STARTING
-    - [ ] Exibir opçõe do MENU - JÚLIA
-    - [ ] Validar as entradas do _path_ - JÚLIA
-    - [ ] Instânciar um novo objeto `Library` e seus arquivos. - HEITOR
-    - [ ] Alterar o estado e validar fluxo do loop - JÚLIA
+- [x] STARTING
+    - [x] Exibir opçõe do MENU - JÚLIA
+    - [x] Validar as entradas do _path_ - JÚLIA
+    - [x] Instânciar um novo objeto `Library` e seus arquivos. - HEITOR
+    - [x] Alterar o estado e validar fluxo do loop - JÚLIA
 - [ ] ROOT
-    - [ ] Exibir opçõe do MENU - JÚLIA
-    - [ ] Validar as entradas do _path_ - JÚLIA
+    - [x] Exibir opçõe do MENU - JÚLIA
+    - [x] Validar as entradas do _path_ - JÚLIA
     - [ ] Operações da biblioteca (classe `Library`) - HEITOR
-    - [ ] Alterar o estado e validar fluxo do loop - JÚLIA
+    - [x] Alterar o estado e validar fluxo do loop - JÚLIA
  - [ ] DIRECTORY
-    - [ ] Exibir opçõe do MENU - JÚLIA
-    - [ ] Validar as entradas do _path_ - JÚLIA
+    - [x] Exibir opçõe do MENU - JÚLIA
+    - [x] Validar as entradas do _path_ - JÚLIA
     - [ ] Operações dos arquivos (classe `File`)  - MARCOS
-    - [ ] Alterar o estado e validar fluxo do loop - JÚLIA
-- [ ] DELETE - JÚLIA
-- [ ] QUITTING - JÚLIA
+    - [x] Alterar o estado e validar fluxo do loop - JÚLIA
+- [x] DELETE - JÚLIA
+- [x] QUITTING - JÚLIA
 
 ## 📁 Estrutura de Pastas - DESATUALIZADO
 ```

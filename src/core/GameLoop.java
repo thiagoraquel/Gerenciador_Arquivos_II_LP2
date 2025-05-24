@@ -306,6 +306,14 @@ public class GameLoop  {
                     break;
                 case 3:
                     System.out.println("Você escolheu deletar arquivo\n");
+                    
+                    System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
+                    scanner.nextLine(); // consumir a quebra de linha pendente
+                    String caminhoPdf = scanner.nextLine();
+
+                    System.out.print("Digite o tipo de entrada (Livros, NotasDeAulas ou Slides): ");
+                    String tipoEntrada = scanner.nextLine();
+                    library.deleteEntry(entry_to_delete);
                     break;
                 case 4:
                     System.out.println("Você escolheu voltar para biblioteca\n");

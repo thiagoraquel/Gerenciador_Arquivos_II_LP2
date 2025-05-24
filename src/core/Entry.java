@@ -43,5 +43,7 @@ public class Entry {
     this.paginas = paginas;
     this.instituicao = instituicao;
   }
-  // getters e setters omitidos para brevidade
+  public String getEntryPath(){
+    return filePath;
+  }
 }

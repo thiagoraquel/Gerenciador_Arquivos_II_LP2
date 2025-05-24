@@ -120,6 +120,41 @@ public class Directory {
         System.out.println("Adicionado: " + pdfSrc.getName()
                         + " e " + jsonFilename + " em " + path);
     }
+
+    public void deleteEntry(String nomeArquivo) {
+        // Construir os caminhos dos arquivos
+        File pdfFile = new File(path, nomeArquivo + ".pdf");
+        File jsonFile = new File(path, nomeArquivo + ".json");
+      
+        // Deletar arquivos físicos
+        boolean pdfDeletado = false;
+        boolean jsonDeletado = false;
+      
+        if (pdfFile.exists()) {
+            pdfDeletado = pdfFile.delete();
+        }
+      
+        if (jsonFile.exists()) {
+            jsonDeletado = jsonFile.delete();
+        }
+      
+        if (!pdfDeletado && !jsonDeletado) {
+            System.out.println("Nenhum arquivo foi deletado. Verifique o nome.");
+        } else {
+            System.out.println("Arquivos deletados:");
+            if (pdfDeletado) System.out.println("- " + pdfFile.getName());
+            if (jsonDeletado) System.out.println("- " + jsonFile.getName());
+      
+                // Remover do vetor files
+                files.removeIf(entry -> {
+                String entryPath = entry.getEntryPath(); // precisa de um getter
+                String nomeBase = new File(entryPath).getName().replace(".pdf", "");
+                return nomeBase.equals(nomeArquivo);
+            });
+      
+            System.out.println("Entrada removida da memória.");
+        }
+    }   
     
     // Você pode adicionar getters aqui se quiser expor os dados
     public String getPath() {

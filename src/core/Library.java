@@ -66,13 +66,13 @@ public class Library {
         }
         System.err.println("Subdiretório não encontrado: " + subdirName);
     }
+
+    public void deleteEntry(String nomeArquivo) {
+        
+    }   
     
     public String getPath() {
         return path;
-    }
-
-    public Vector<Directory> getDirectories() {
-        return directories;
     }
 
     public Vector<String> getDirectoriesPaths() {
