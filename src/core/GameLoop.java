@@ -105,6 +105,10 @@ public class GameLoop  {
             // Espera-se que sejam nomes de diretórios válidos
             // O programa apenas faz bibliotecas válidas no ValidLibraries
             // Ou seja, não deve tratar nada aqui (por enquanto)
+            System.out.println("Passou Aqui");
+
+            // Dá erro aqui caso as bibliotecas tenham sido deletadas manualmente e o programa comece, pois os nomes da bibliotecas
+            // ainda estão no ValidLibraries.txt
         }
 
         // Verificar se os nomes em ValidLibraries.txt são válidos (existem e são diretórios)
@@ -263,7 +267,22 @@ public class GameLoop  {
                     }
 
                     System.out.print("Número da opção: ");
-                    int escolha = Integer.parseInt(scanner.nextLine());
+                    scanner.nextLine();
+                    String temp = scanner.nextLine();
+
+                    if (temp.isEmpty()) {
+                    System.out.println("Entrada vazia. Digite um número válido.");
+                    return;
+                    }
+
+                    int escolha;
+                    try {
+                    escolha = Integer.parseInt(temp);
+                    } catch (NumberFormatException e) {
+                    System.out.println("Formato inválido. Digite um número.");
+                    return; // ou repetir o menu
+                    }
+
 
                     if (escolha >= 1 && escolha <= dirs.size()) {
                         Directory escolhido = dirs.get(escolha - 1);
