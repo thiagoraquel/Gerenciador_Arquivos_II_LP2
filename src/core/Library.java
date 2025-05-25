@@ -66,11 +66,11 @@ public class Library {
         }
     }
     
-    public void deleteEntry(String name){
-        SubDir.deleteEntry(name);
+    public void deleteEntry(String entryName){
+        SubDir.deleteEntry(entryName);
     }
 
-    public void setCurrentDir(String subdirName) {
+    public void setCurrentSubdir(String subdirName) {
         for (Directory d : directories) {
           String dirName = new File(d.getPath()).getName();
           if (dirName.equals(subdirName)) {
