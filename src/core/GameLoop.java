@@ -342,7 +342,6 @@ public class GameLoop  {
                     break;
                 case 3:
                     System.out.println("Você escolheu deletar arquivo\n");
-                    
                     System.out.print("Digite o nome do arquivo (ex: MeuSlide): ");
                     scanner.nextLine(); // consumir a quebra de linha pendente
                     String name = scanner.nextLine();
