@@ -4,7 +4,6 @@ import core.Library;
 import core.Config;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
 import java.io.File;  
@@ -69,7 +68,7 @@ public class GameLoop  {
 
     public void initialize(){
         // Lê nomes dos diretórios no file
-        List<String> libs_on_file = config.getDirectoriesNames();
+        List<String> libs_on_file = config.getLibrariesNames();
         // Ver quais bibliotecas estão no arquivo
         // config.printLibraries();
 
@@ -112,7 +111,7 @@ public class GameLoop  {
         config.removeInvalidLibraries();
 
         // Adicionar os paths das bibliotecas no ValidLibraries.txt ao vetor de bibliotecas
-        List<String> validLibPaths = config.getDirectoriesNames();
+        List<String> validLibPaths = config.getLibrariesNames();
         for (String libPath : validLibPaths) {
             Library lib = new Library(libPath, scanner);
             libraries.add(lib);
@@ -281,16 +280,19 @@ public class GameLoop  {
 
             entrada = scanner.nextInt();
 
+            String caminhoPdf;
+            String tipoEntrada;
+
             switch (entrada) {
                 case 1:
                     System.out.println("Você escolheu adicionar arquivos\n");
 
                     System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
                     scanner.nextLine(); // consumir a quebra de linha pendente
-                    String caminhoPdf = scanner.nextLine();
+                    caminhoPdf = scanner.nextLine();
 
                     System.out.print("Digite o tipo de entrada (Livros, NotasDeAulas ou Slides): ");
-                    String tipoEntrada = scanner.nextLine();
+                    tipoEntrada = scanner.nextLine();
 
                     if (!tipoEntrada.equals("Livros") &&
                         !tipoEntrada.equals("NotasDeAulas") &&
@@ -309,11 +311,11 @@ public class GameLoop  {
                     
                     System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
                     scanner.nextLine(); // consumir a quebra de linha pendente
-                    String caminhoPdf = scanner.nextLine();
+                    caminhoPdf = scanner.nextLine();
 
                     System.out.print("Digite o tipo de entrada (Livros, NotasDeAulas ou Slides): ");
-                    String tipoEntrada = scanner.nextLine();
-                    library.deleteEntry(entry_to_delete);
+                    tipoEntrada = scanner.nextLine();
+                    //library.deleteEntry(entry_to_delete);
                     break;
                 case 4:
                     System.out.println("Você escolheu voltar para biblioteca\n");

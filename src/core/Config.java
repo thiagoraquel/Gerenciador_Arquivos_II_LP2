@@ -12,7 +12,7 @@ import java.util.List;
 public class Config {
   private final String VALID_LIBS_FILE = "data/ValidLibraries.txt";
 
-  // Adiciona uma nova biblioteca (sem duplicar)
+  // Adiciona uma nova biblioteca (sem duplicar) em ValidLibraries.txt
   public void addLibrary(String path) {
     if (libraryExists(path)) return;
 
@@ -46,8 +46,8 @@ public class Config {
     return false;
   }
 
-  // Lê todos os diretórios válidos
-  public List<String> getDirectoriesNames() {
+  // Retorna o nome das bibliotecas válidas
+  public List<String> getLibrariesNames() {
     List<String> directories = new ArrayList<>();
     File file = new File(VALID_LIBS_FILE);
     if (!file.exists()) {
@@ -68,7 +68,7 @@ public class Config {
 
   // Imprime todas as bibliotecas registradas no arquivo
   public void printLibraries() {
-    List<String> libraries = getDirectoriesNames();
+    List<String> libraries = getLibrariesNames();
 
     if (libraries.isEmpty()) {
       System.out.println("Nenhuma biblioteca registrada.");
@@ -81,8 +81,9 @@ public class Config {
     }
   }
 
+  // Remove de ValidLibraires.txt as bibliotecas que não existem
   public void removeInvalidLibraries() {
-    List<String> allLibs = getDirectoriesNames();
+    List<String> allLibs = getLibrariesNames();
     List<String> validLibs = new ArrayList<>();
   
     for (String lib : allLibs) {

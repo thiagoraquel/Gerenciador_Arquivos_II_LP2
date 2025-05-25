@@ -19,8 +19,9 @@ import java.util.Vector;
 public class Library {
     // TODO: atributos
     Vector<Directory> directories = new Vector<>();
-    String path;           // Caminho do diretório raiz do sistema de gerenciamento
+    String path;            // Caminho do diretório raiz do sistema de gerenciamento
     Scanner scanner;
+    String SubDir;           // Subdiretório atual/em uso da biblioteca
 
     public Library(String path, Scanner scanner) {
         this.path = path;

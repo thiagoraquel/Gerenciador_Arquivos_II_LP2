@@ -85,11 +85,12 @@ public class Directory {
         throw new FileNotFoundException("PDF não encontrado: " + pdfSourcePath);
         }
 
-        // copiar PDF para dentro deste diretório
+        // Copia PDF para dentro deste diretório
         Path destPdfPath = Paths.get(path, pdfSrc.getName());
         Files.copy(pdfSrc.toPath(), destPdfPath, StandardCopyOption.REPLACE_EXISTING);
 
-        // criar o Entry
+        // Cria o Entry
+        // relativo é o caminho relativo ao diretório atual (path)
         String relativo = new File(path).toPath()
                             .getFileName().resolve(pdfSrc.getName())
                             .toString();
@@ -99,26 +100,19 @@ public class Directory {
         /* autores */    autores,
         /* titulo */     titulo,
         /* subtitulo */  subtitulo.isEmpty() ? null : subtitulo,
-        /* area */       null,            // só para livros
         /* disciplina */ disciplina,
-        /* editora */    null,
-        /* ano */        ano,
-        /* paginas */    0,
-        /* instituicao*/ null
+        /* ano */        ano
         );
 
-        // 3) Salvar JSON
+        // Salvar JSON
         Gson gson = new Gson();
         String jsonFilename = pdfSrc.getName().replaceAll("\\.pdf$", ".json");
         try (Writer writer = new FileWriter(new File(path, jsonFilename))) {
         gson.toJson(entry, writer);
         }
 
-        // 4) Guardar na memória
+        // Guardar na memória
         files.add(entry);
-
-        System.out.println("Adicionado: " + pdfSrc.getName()
-                        + " e " + jsonFilename + " em " + path);
     }
 
     public void deleteEntry(String nomeArquivo) {
@@ -156,33 +150,7 @@ public class Directory {
         }
     }   
     
-    // Você pode adicionar getters aqui se quiser expor os dados
     public String getPath() {
       return path;
-    }
-
-     /**
-     * Cria um novo aquivo no diretório
-     */
-    public void create () {
-        
-    }
-    
-    /**
-     * Edita um arquivo do direótio
-     * 
-     * @param file_name nomedo arquivo
-     */
-    public void edit (String file_name) {
-    
-    }
-
-    /**
-     * Busca um diretório pelo nome
-     * 
-     * @param file_name nome do diretório
-     */
-    public void delete (String file_name) {
-
     }
 }
