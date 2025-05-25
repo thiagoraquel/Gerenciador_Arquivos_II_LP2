@@ -236,7 +236,7 @@ public class GameLoop  {
             System.out.print("\n");
 
             System.out.println("Escolha uma opção:");
-            System.out.println("1. Acessar subdiretório");
+            System.out.println("1. Acessar Subdiretório");
             System.out.println("2. Buscar Arquivos");
             System.out.println("3. Trocar Biblioteca");
             System.out.println("4. Deletar Biblioteca");
@@ -247,9 +247,33 @@ public class GameLoop  {
 
             switch (entrada) {
                 case 1:
-                    System.out.println("Você escolheu acessar arquivos\n");
-                    state = e_states.DIRECTORY;
+                    System.out.println("Você escolheu acessar subdiretório\n");
+
+                    // Mostrar subdiretórios disponíveis
+                    Vector<Directory> dirs = library.getDirectories(); // Você precisa de um getter para isso
+                    if (dirs.isEmpty()) {
+                        System.out.println("Nenhum subdiretório encontrado.");
+                        break;
+                    }
+
+                    System.out.println("Escolha um subdiretório:");
+                    for (int i = 0; i < dirs.size(); i++) {
+                        String nome = new File(dirs.get(i).getPath()).getName();
+                        System.out.printf("  %d) %s\n", i + 1, nome);
+                    }
+
+                    System.out.print("Número da opção: ");
+                    int escolha = Integer.parseInt(scanner.nextLine());
+
+                    if (escolha >= 1 && escolha <= dirs.size()) {
+                        Directory escolhido = dirs.get(escolha - 1);
+                        library.setCurrentDir(new File(escolhido.getPath()).getName());
+                        state = e_states.DIRECTORY;
+                    } else {
+                        System.out.println("Opção inválida.");
+                    }
                     break;
+
                 case 2:
                     System.out.println("Você escolheu buscar arquivos\n");
                     state = e_states.LIBRARY;
@@ -290,18 +314,9 @@ public class GameLoop  {
                     System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
                     scanner.nextLine(); // consumir a quebra de linha pendente
                     caminhoPdf = scanner.nextLine();
+                    // Fazer Error catcher
 
-                    System.out.print("Digite o tipo de entrada (Livros, NotasDeAulas ou Slides): ");
-                    tipoEntrada = scanner.nextLine();
-
-                    if (!tipoEntrada.equals("Livros") &&
-                        !tipoEntrada.equals("NotasDeAulas") &&
-                        !tipoEntrada.equals("Slides")) {
-                    System.out.println("Tipo inválido. Use exatamente: Livros, NotasDeAulas ou Slides.");
-                    break;
-                    }
-
-                    library.addEntry(caminhoPdf, tipoEntrada);
+                    library.addEntry(caminhoPdf);
                     break;
                 case 2:
                     System.out.println("Você escolheu editar arquivos\n");

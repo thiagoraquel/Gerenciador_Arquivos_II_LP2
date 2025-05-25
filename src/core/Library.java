@@ -21,7 +21,7 @@ public class Library {
     Vector<Directory> directories = new Vector<>();
     String path;            // Caminho do diretório raiz do sistema de gerenciamento
     Scanner scanner;
-    String SubDir;           // Subdiretório atual/em uso da biblioteca
+    Directory SubDir;           // Subdiretório atual/em uso da biblioteca
 
     public Library(String path, Scanner scanner) {
         this.path = path;
@@ -52,25 +52,32 @@ public class Library {
    * Para delegar a criação de uma nova Entry, basta escolher
    * qual subdiretório usar e chamar o addEntry dele.
    */
-    public void addEntry(String pdfSourcePath, String subdirName) {
-        // procura o Directory correspondente
+    public void addEntry(String pdfSourcePath) {
+        if (SubDir == null) {
+            System.err.println("Nenhum subdiretório selecionado. Use setCurrentDir() antes de adicionar uma entry.");
+            return;
+        }
+    
+        try {
+            SubDir.addEntry(pdfSourcePath);
+        } catch (IOException e) {
+            System.err.println("Falha ao adicionar entry: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+  
+
+    public void setCurrentDir(String subdirName) {
         for (Directory d : directories) {
-            if (new File(d.getPath()).getName().equals(subdirName)) {
-                try {
-                    d.addEntry(pdfSourcePath);
-                } catch (IOException e) {
-                    System.err.println("Falha ao adicionar entry: " + e.getMessage());
-                    e.printStackTrace();
-                }
-                return;
-            }
+          String dirName = new File(d.getPath()).getName();
+          if (dirName.equals(subdirName)) {
+            SubDir = d;
+            System.out.println("Subdiretório atual definido para: " + dirName);
+            return;  // importante sair do método aqui
+          }
         }
         System.err.println("Subdiretório não encontrado: " + subdirName);
-    }
-
-    public void deleteEntry(String nomeArquivo) {
-        
-    }   
+    }  
     
     public String getPath() {
         return path;
@@ -82,7 +89,11 @@ public class Library {
           paths.add(dir.getPath());
         }
         return paths;
-      }
+    }
+
+    public Vector<Directory> getDirectories(){
+        return directories;
+    }
 
     /**
      * Organiza os arquivos em diretórios por tipo ou nome de autores

@@ -94,8 +94,11 @@ public class Directory {
         String relativo = new File(path).toPath()
                             .getFileName().resolve(pdfSrc.getName())
                             .toString();
+
+        String tipo = new File(path).getName(); // nome da pasta (ex: "Livros", "NotasDeAulas")
+        
         Entry entry = new Entry(
-        /* tipo */       "Nota",          // ou "Livro"/"Slide" conforme o seu design
+        /* tipo */       tipo,
         /* filePath */   relativo,
         /* autores */    autores,
         /* titulo */     titulo,
