@@ -151,15 +151,17 @@ public class GameLoop  {
     */
     public void render() {
         switch (state) {
-          case STARTING:
-            startingState();
-            break;
-          case LIBRARY:
-            libraryState();
-            break;
-          case DIRECTORY:
-            directoryState();
-            break;
+            case STARTING:
+                startingState();
+                break;
+            case LIBRARY:
+                libraryState();
+                break;
+            case DIRECTORY:
+                directoryState();
+                break;
+            case QUITTING:
+                break;
         }
     }
       
