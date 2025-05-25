@@ -65,7 +65,10 @@ public class Library {
             e.printStackTrace();
         }
     }
-  
+    
+    public void deleteEntry(String name){
+        SubDir.deleteEntry(name);
+    }
 
     public void setCurrentDir(String subdirName) {
         for (Directory d : directories) {
