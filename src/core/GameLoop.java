@@ -47,16 +47,10 @@ public class GameLoop  {
     Vector<Library> libraries = new Vector<>(); // vetor com todas as bibliotecas raiz reconhecidas pelo programa
     Library library;                            // biblioteca que esta sendo acessada
     Config config = new Config();               // configuração de inicialização
-    String Current_Subdir;                        // Atual subdiretório
 
-    int entrada;                                // Entrada do terminal
+    String entrada_str;                         // Entrada de string do terminal
+    int entrada_num;                            // Entrada de número do terminal
     public static final Scanner scanner = new Scanner(System.in); // Scanner do terminal
-
-    // fechar o scanner
-    // obs: só fechar quando o programa terminar
-    public void close_scanner() {
-        scanner.close();
-    }
 
     /**
      * Construtor
@@ -67,10 +61,7 @@ public class GameLoop  {
     }
 
     public void initialize(){
-        // Lê nomes dos diretórios no file
         List<String> libs_on_file = config.getLibrariesNames();
-        // Ver quais bibliotecas estão no arquivo
-        // config.printLibraries();
 
         // Se o ValidLibraries.txt está vazio, assume-se que é a primeira inicialização
         // Ou seja, ValidLibraries.txt sempre tem ao menos uma biblioteca, exceto na primeira init
@@ -79,15 +70,15 @@ public class GameLoop  {
             "Não existe nenhuma biblioteca válida existente\n" + 
             "Digite um nome válido para criar uma biblioteca: ");
             
-            String userInput = scanner.nextLine();
-            File dir = new File(userInput); 
+            entrada_str = scanner.nextLine();
+            File dir = new File(entrada_str); 
             
             // Se diretório dado por usuário não existe
             if (!dir.exists()) {
                 boolean success = dir.mkdirs();
                 // Cria uma nova biblioteca
                 if (success) {
-                    config.addLibrary(userInput);
+                    config.addLibrary(entrada_str);
                 } else {
                     System.out.println("Falha ao criar o diretório.");
                 }
@@ -97,8 +88,7 @@ public class GameLoop  {
             else { 
                 // TODO: Nome de primeira biblioteca já existe
                 // Perguntar por nome da biblioteca até que user dê um nome que ainda não foi usado
-                System.out.println("Diretório já existe, crie um diretório com um nome diferente: ");   
-               
+                System.out.println("Diretório já existe, crie um diretório com um nome diferente: ");
             }
         } else {
             // Já existem nomes de bibliotecas no ValidLibraries.txt
@@ -161,208 +151,211 @@ public class GameLoop  {
      * Renderiza as autualizações do sistema para o usuário
     */
     public void render() {
-        if (state == e_states.STARTING) {
-            System.out.print("\n");
-            config.printLibraries();
-            System.out.print("\n");
-
-            System.out.println("Escolha uma opção:");
-            System.out.println("1. Acessar biblioteca existente");
-            System.out.println("2. Criar nova biblioteca");
-            System.out.print("Opção: ");
-
-            entrada = scanner.nextInt();
-            switch (entrada) {
-                case 1:
-                    System.out.println("Você escolheu acessar biblioteca existente.");
-                    System.out.print("\n");
-
-                    System.out.println("Escolha uma das bibliotecas existentes:");
-
-                    for (int i = 1; i <= libraries.size(); i++) {
-                        Library lib = libraries.get(i-1);
-                        System.out.println(i + " - " + lib.getPath()); // ou lib.toString(), se você sobrescreveu
-                    }
-                    System.out.print("\n");
-
-                    System.out.print("Digite o número da biblioteca: ");
-                    int indice = scanner.nextInt();
-
-                    if (indice >= 1 && indice <= libraries.size()) {
-                        library = libraries.get(indice - 1);
-                        System.out.println("Biblioteca selecionada: " + library.getPath());
-                        System.out.print("\n");
-                        // Continue o programa com a biblioteca escolhida
-                    } else {
-                        System.out.println("Índice inválido.");
-                    }
-
-                    state = e_states.LIBRARY;
-                    break;
-                    case 2:
-                        System.out.println("Você escolheu criar nova biblioteca.");
-                        System.out.print("\n");
-                        state = e_states.STARTING;
-                    
-                        System.out.print("Digite o nome da nova biblioteca (sem espaços): ");
-                        scanner.nextLine();
-                        String nomeBiblioteca = scanner.nextLine();
-                        // Também é o caminho
-                    
-                        File novaPasta = new File(nomeBiblioteca);
-                        if (novaPasta.exists()) {
-                            System.out.println("Já existe uma biblioteca com esse nome.");
-                        } else {
-                            boolean criada = novaPasta.mkdirs();
-                            if (criada) {
-                                // Cria a nova instância de Library e adiciona à lista
-                                Library novaLibrary = new Library(nomeBiblioteca, scanner);
-                                libraries.add(novaLibrary);
-                                config.addLibrary(nomeBiblioteca);
-                                System.out.println("Biblioteca criada com sucesso: " + novaLibrary.getPath());
-                            } else {
-                                System.out.println("Erro ao criar diretório da nova biblioteca.");
-                            }
-                        }
-                    break;
-                default:
-                    System.out.println("Opção inválida.\n");
-            }
-        } else if (state == e_states.LIBRARY) {
-            System.out.println("Path da biblioteca:");
-            System.out.println(library.getPath());
-            System.out.print("\n");
-
-            System.out.println("Paths dos subdiretórios:");
-            for (String dirPath : library.getDirectoriesPaths()) {
-                System.out.println("- " + dirPath);
-            }
-            System.out.print("\n");
-
-            System.out.println("Escolha uma opção:");
-            System.out.println("1. Acessar Subdiretório");
-            System.out.println("2. Buscar Arquivos");
-            System.out.println("3. Trocar Biblioteca");
-            System.out.println("4. Deletar Biblioteca");
-            System.out.println("5. Sair");
-            System.out.print("Opção: ");
-
-            entrada = scanner.nextInt();
-
-            switch (entrada) {
-                case 1:
-                    System.out.println("Você escolheu acessar subdiretório\n");
-
-                    // Mostrar subdiretórios disponíveis
-                    Vector<Directory> dirs = library.getDirectories(); // Você precisa de um getter para isso
-                    if (dirs.isEmpty()) {
-                        System.out.println("Nenhum subdiretório encontrado.");
-                        break;
-                    }
-
-                    System.out.println("Escolha um subdiretório:");
-                    for (int i = 0; i < dirs.size(); i++) {
-                        String nome = new File(dirs.get(i).getPath()).getName();
-                        System.out.printf("  %d) %s\n", i + 1, nome);
-                    }
-
-                    System.out.print("Número da opção: ");
-                    scanner.nextLine();
-                    String temp = scanner.nextLine();
-
-                    if (temp.isEmpty()) {
-                    System.out.println("Entrada vazia. Digite um número válido.");
-                    return;
-                    }
-
-                    int escolha;
-                    try {
-                    escolha = Integer.parseInt(temp);
-                    } catch (NumberFormatException e) {
-                    System.out.println("Formato inválido. Digite um número.");
-                    return; // ou repetir o menu
-                    }
-
-
-                    if (escolha >= 1 && escolha <= dirs.size()) {
-                        Directory escolhido = dirs.get(escolha - 1);
-                        library.setCurrentDir(new File(escolhido.getPath()).getName());
-                        state = e_states.DIRECTORY;
-                    } else {
-                        System.out.println("Opção inválida.");
-                    }
-                    break;
-
-                case 2:
-                    System.out.println("Você escolheu buscar arquivos\n");
-                    state = e_states.LIBRARY;
-                    break;
-                case 3:
-                    System.out.println("Você escolheu trocar biblioteca\n");
-                    state = e_states.STARTING;
-                    break;
-                case 4:
-                    System.out.println("Você escolheu deletar biblioteca\n");
-                    op_library = e_op_library.DELETE;
-                    break;
-                case 5:
-                    System.out.println("Você escolheu sair do programa\n");
-                    state = e_states.QUITTING;
-                    break;
-                default:
-                    System.out.println("Opção inválida\n");
-            }
-
-        } else if (state == e_states.DIRECTORY) {
-            System.out.println("Escolha uma opção:");
-            System.out.println("1. Adicionar arquivos");
-            System.out.println("2. Editar arquivo");
-            System.out.println("3. Deletar arquivo");
-            System.out.println("4. Voltar para biblioteca");
-            System.out.print("Opção: ");
-
-            entrada = scanner.nextInt();
-
-            String caminhoPdf;
-            String tipoEntrada;
-
-            switch (entrada) {
-                case 1:
-                    System.out.println("Você escolheu adicionar arquivos\n");
-
-                    System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
-                    scanner.nextLine(); // consumir a quebra de linha pendente
-                    caminhoPdf = scanner.nextLine();
-                    // Fazer Error catcher
-
-                    library.addEntry(caminhoPdf);
-                    break;
-                case 2:
-                    System.out.println("Você escolheu editar arquivos\n");
-                    break;
-                case 3:
-                    System.out.println("Você escolheu deletar arquivo\n");
-                    System.out.print("Digite o nome do arquivo (ex: MeuSlide): ");
-                    scanner.nextLine(); // consumir a quebra de linha pendente
-                    String name = scanner.nextLine();
-                    library.deleteEntry(name);
-                    break;
-                case 4:
-                    System.out.println("Você escolheu voltar para biblioteca\n");
-                    state = e_states.LIBRARY;
-                    break;
-                default:
-                    System.out.println("Opção inválida.\n");
+        switch (state) {
+          case STARTING:
+            handleStartingState();
+            break;
+          case LIBRARY:
+            handleLibraryState();
+            break;
+          case DIRECTORY:
+            handleDirectoryState();
+            break;
+        }
+    }
+      
+    private void handleStartingState() {
+        System.out.print("\n");
+        config.printLibraries();
+        System.out.print("\n");
+      
+        System.out.println("Escolha uma opção:");
+        System.out.println("1. Acessar biblioteca existente");
+        System.out.println("2. Criar nova biblioteca");
+        System.out.print("Opção: ");
+      
+        entrada_num = scanner.nextInt();
+      
+        switch (entrada_num) {
+            case 1:
+                selecionarBibliotecaExistente();
+                break;
+            case 2:
+                criarNovaBiblioteca();
+                break;
+            default:
+                System.out.println("Opção inválida.\n");
+        }
+    }
+      
+    private void selecionarBibliotecaExistente() {
+        System.out.println("Você escolheu acessar biblioteca existente.\n");
+        System.out.println("Escolha uma das bibliotecas existentes:");
+      
+        for (int i = 1; i <= libraries.size(); i++) {
+            Library lib = libraries.get(i - 1);
+            System.out.println(i + " - " + lib.getPath());
+        }
+      
+        System.out.print("\nDigite o número da biblioteca: ");
+        int indice = scanner.nextInt();
+      
+        if (indice >= 1 && indice <= libraries.size()) {
+            library = libraries.get(indice - 1);
+            System.out.println("Biblioteca selecionada: " + library.getPath() + "\n");
+            state = e_states.LIBRARY;
+        } else {
+            System.out.println("Índice inválido.");
+        }
+    }
+      
+    private void criarNovaBiblioteca() {
+        System.out.println("Você escolheu criar nova biblioteca.\n");
+        System.out.print("Digite o nome da nova biblioteca (sem espaços): ");
+        scanner.nextLine(); // consumir quebra de linha
+        String nomeBiblioteca = scanner.nextLine();
+      
+        File novaPasta = new File(nomeBiblioteca);
+        if (novaPasta.exists()) {
+            System.out.println("Já existe uma biblioteca com esse nome.");
+        } else {
+            if (novaPasta.mkdirs()) {
+                Library novaLibrary = new Library(nomeBiblioteca, scanner);
+                libraries.add(novaLibrary);
+                config.addLibrary(nomeBiblioteca);
+                System.out.println("Biblioteca criada com sucesso: " + novaLibrary.getPath());
+            } else {
+                System.out.println("Erro ao criar diretório da nova biblioteca.");
             }
         }
     }
+      
+    private void handleLibraryState() {
+        System.out.println("Path da biblioteca:");
+        System.out.println(library.getPath() + "\n");
+      
+        System.out.println("Paths dos subdiretórios:");
+        for (String dirPath : library.getDirectoriesPaths()) {
+            System.out.println("- " + dirPath);
+        }
+        System.out.print("\n");
+      
+        System.out.println("Escolha uma opção:");
+        System.out.println("1. Acessar Subdiretório");
+        System.out.println("2. Buscar Arquivos");
+        System.out.println("3. Trocar Biblioteca");
+        System.out.println("4. Deletar Biblioteca");
+        System.out.println("5. Sair");
+        System.out.print("Opção: ");
+      
+        entrada_num = scanner.nextInt();
+      
+        switch (entrada_num) {
+            case 1:
+                acessarSubdiretorio();
+                break;
+            case 2:
+                System.out.println("Você escolheu buscar arquivos\n");
+                break;
+            case 3:
+                System.out.println("Você escolheu trocar biblioteca\n");
+                state = e_states.STARTING;
+                break;
+            case 4:
+                System.out.println("Você escolheu deletar biblioteca\n");
+                op_library = e_op_library.DELETE;
+                break;
+            case 5:
+                System.out.println("Você escolheu sair do programa\n");
+                state = e_states.QUITTING;
+                break;
+            default:
+                System.out.println("Opção inválida\n");
+        }
+    }
+      
+    private void acessarSubdiretorio() {
+        Vector<Directory> dirs = library.getDirectories();
+        if (dirs.isEmpty()) {
+            System.out.println("Nenhum subdiretório encontrado.");
+            return;
+        }
+      
+        System.out.println("Escolha um subdiretório:");
+        for (int i = 0; i < dirs.size(); i++) {
+            String nome = new File(dirs.get(i).getPath()).getName();
+            System.out.printf("  %d) %s\n", i + 1, nome);
+        }
+      
+        System.out.print("Número da opção: ");
+        scanner.nextLine(); // consumir \n do nextInt anterior
+        String temp = scanner.nextLine();
+      
+        if (temp.isEmpty()) {
+            System.out.println("Entrada vazia. Digite um número válido.");
+            return;
+        }
+      
+        int escolha;
+        try {
+            escolha = Integer.parseInt(temp);
+        } catch (NumberFormatException e) {
+            System.out.println("Formato inválido. Digite um número.");
+            return;
+        }
+      
+        if (escolha >= 1 && escolha <= dirs.size()) {
+            Directory escolhido = dirs.get(escolha - 1);
+            library.setCurrentDir(new File(escolhido.getPath()).getName());
+            state = e_states.DIRECTORY;
+        } else {
+            System.out.println("Opção inválida.");
+        }
+    }
+      
+    private void handleDirectoryState() {
+        System.out.println("Escolha uma opção:");
+        System.out.println("1. Adicionar arquivos");
+        System.out.println("2. Editar arquivo");
+        System.out.println("3. Deletar arquivo");
+        System.out.println("4. Voltar para biblioteca");
+        System.out.print("Opção: ");
+      
+        entrada_num = scanner.nextInt();
+        scanner.nextLine(); // consumir quebra de linha
+      
+        switch (entrada_num) {
+            case 1:
+                System.out.println("Você escolheu adicionar arquivos\n");
+                System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
+                String caminhoPdf = scanner.nextLine();
+                library.addEntry(caminhoPdf);
+                break;
+            case 2:
+                System.out.println("Você escolheu editar arquivos\n");
+                break;
+            case 3:
+                System.out.println("Você escolheu deletar arquivo\n");
+                System.out.print("Digite o nome do arquivo (ex: MeuSlide): ");
+                String nome = scanner.nextLine();
+                library.deleteEntry(nome);
+                break;
+            case 4:
+                System.out.println("Você escolheu voltar para biblioteca\n");
+                state = e_states.LIBRARY;
+                break;
+            default:
+                System.out.println("Opção inválida.\n");
+        }
+    }      
 
-    /**
-     * Controle do loop
-    * 
-    * @return variável booleana
-    */
     public boolean is_over() {
         return end_loop;
+    }
+
+    // fechar o scanner
+    // obs: só fechar quando o programa terminar
+    public void close_scanner() {
+        scanner.close();
     }
 }
