@@ -1,8 +1,5 @@
 package core;
 
-import core.Library;
-import core.Config;
-
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
@@ -329,17 +326,20 @@ public class GameLoop  {
             case 1:
                 System.out.println("Você escolheu adicionar arquivos\n");
                 System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
-                String pdfSourcePath = scanner.nextLine();
-                library.addEntry(pdfSourcePath);
+                str_input = scanner.nextLine();
+                library.addEntry(str_input);
                 break;
             case 2:
                 System.out.println("Você escolheu editar arquivos\n");
+                System.out.print("Digite o nome do arquivo (ex: MeuSlide): ");
+                str_input = scanner.nextLine();
+                library.editEntry(str_input);
                 break;
             case 3:
                 System.out.println("Você escolheu deletar arquivo\n");
                 System.out.print("Digite o nome do arquivo (ex: MeuSlide): ");
-                String entryName = scanner.nextLine();
-                library.deleteEntry(entryName);
+                str_input = scanner.nextLine();
+                library.deleteEntry(str_input);
                 break;
             case 4:
                 System.out.println("Você escolheu voltar para biblioteca\n");

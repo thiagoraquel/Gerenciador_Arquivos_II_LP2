@@ -1,7 +1,5 @@
 package core;
 
-import core.Entry;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -152,6 +150,76 @@ public class Directory {
             System.out.println("Entrada removida da memória.");
         }
     }   
+
+    public void editEntry(String nomeArquivo) throws IOException {
+        // 1) Encontrar o Entry
+        Entry alvo = null;
+        for (Entry e : files) {
+            if (e.getFileNameBase().equals(nomeArquivo)) {
+                alvo = e;
+                break;
+            }
+        }
+        if (alvo == null) {
+            System.out.println("Entry não encontrada: " + nomeArquivo);
+          return;
+        }
+      
+        System.out.println("=== Editando entry: " + nomeArquivo + " ===");
+      
+        // 2) Perguntar campos, mostrando valor atual e aceitando ENTER para manter
+        // Autores
+        System.out.print("Autores atuais (" + String.join(", ", alvo.getAutores()) + "): ");
+        String line = scanner.nextLine().trim();
+        if (!line.isEmpty()) {
+            List<String> novos = Arrays.asList(line.split("\\s*,\\s*"));
+            alvo.setAutores(novos);
+        }
+      
+        // Título
+        System.out.print("Título atual (" + alvo.getTitulo() + "): ");
+        line = scanner.nextLine().trim();
+        if (!line.isEmpty()) {
+            alvo.setTitulo(line);
+        }
+      
+        // Subtítulo
+        String atualSub = alvo.getSubtitulo() == null ? "" : alvo.getSubtitulo();
+        System.out.print("Subtítulo atual (" + (atualSub.isEmpty() ? "nenhum" : atualSub) + "): ");
+        line = scanner.nextLine().trim();
+        if (!line.isEmpty()) {
+            alvo.setSubtitulo(line);
+        }
+      
+        // Disciplina
+        System.out.print("Disciplina atual (" + alvo.getDisciplina() + "): ");
+        line = scanner.nextLine().trim();
+        if (!line.isEmpty()) {
+            alvo.setDisciplina(line);
+        }
+      
+        // Ano
+        System.out.print("Ano atual (" + alvo.getAno() + "): ");
+        line = scanner.nextLine().trim();
+        if (!line.isEmpty()) {
+            try {
+                alvo.setAno(Integer.parseInt(line));
+            } catch (NumberFormatException ex) {
+                System.out.println("Formato de ano inválido. Mantendo valor anterior.");
+            }
+        }
+      
+        // 3) Salvar JSON atualizado
+        Gson gson = new Gson();
+        String jsonFilename = nomeArquivo + ".json";
+        try (Writer writer = new FileWriter(new File(path, jsonFilename))) {
+            gson.toJson(alvo, writer);
+        }
+      
+        // 4) Mostrar no terminal o Entry atualizado
+        System.out.println("\n=== Entry atualizado ===");
+        System.out.println(alvo);
+    }      
     
     public String getPath() {
       return path;

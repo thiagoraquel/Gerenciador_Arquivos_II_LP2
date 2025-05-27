@@ -1,7 +1,5 @@
 package core;
 
-import utils.Database;
-import core.Directory;
 import java.io.File;
 import java.io.IOException;
 import java.lang.String;
@@ -66,9 +64,19 @@ public class Library {
         }
     }
     
+    // Fazer tratamento de exceções aqui
     public void deleteEntry(String entryName){
         SubDir.deleteEntry(entryName);
     }
+
+    public void editEntry(String entryName) {
+        try {
+          SubDir.editEntry(entryName);
+        } catch (IOException e) {
+          System.err.println("Erro ao editar entry: " + e.getMessage());
+          e.printStackTrace(); // ou apenas logar, ou nada
+        }
+      }
 
     public void setCurrentSubdir(String subdirName) {
         for (Directory d : directories) {
