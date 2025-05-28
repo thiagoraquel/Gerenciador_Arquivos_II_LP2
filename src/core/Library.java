@@ -88,7 +88,37 @@ public class Library {
           }
         }
         System.err.println("Subdiretório não encontrado: " + subdirName);
-    }  
+    }
+
+    public void deleteLibrary() {
+        File rootDir = new File(path);
+      
+        if (!rootDir.exists()) {
+            System.out.println("Diretório já não existe no sistema de arquivos.");
+        } else {
+            deleteRecursive(rootDir);
+            System.out.println("Diretório e conteúdos apagados com sucesso: " + path);
+        }
+      
+        // Limpar os dados em memória
+        for (Directory dir : directories) {
+            dir.clear(); // limpa os arquivos do diretório
+        }
+      
+        directories.clear();
+        SubDir = null;
+        path = null; // opcional, se quiser invalidar completamente a instância
+    }
+    
+    private void deleteRecursive(File file) {
+        if (file.isDirectory()) {
+            for (File sub : file.listFiles()) {
+                deleteRecursive(sub);
+            }
+        }
+        file.delete();
+    }
+      
     
     public String getPath() {
         return path;

@@ -261,8 +261,12 @@ public class GameLoop  {
                 state = e_states.STARTING;
                 break;
             case 4:
-                System.out.println("Você escolheu deletar biblioteca\n");
-                op_library = e_op_library.DELETE;
+                System.out.println("Você escolheu deletara atual biblioteca\n");
+                state = e_states.STARTING;
+                library.deleteLibrary();       // limpa arquivos e memória
+                libraries.remove(library);    // remove da lista global
+                library = null;               // reseta o ponteiro atual
+                config.removeInvalidLibraries();
                 break;
             case 5:
                 System.out.println("Você escolheu sair do programa\n");

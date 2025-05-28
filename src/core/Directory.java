@@ -55,6 +55,12 @@ public class Directory {
         }
     }
 
+    public void clear() {
+        files.clear();
+        scanner = null;
+        path = null;
+    }  
+
    /**
     * Copia o PDF para este diretório e cria o arquivo JSON com os metadados.
     * @param pdfSourcePath caminho completo para o PDF de origem
