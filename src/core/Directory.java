@@ -115,17 +115,17 @@ public class Directory {
         Gson gson = new Gson();
         String jsonFilename = pdfSrc.getName().replaceAll("\\.pdf$", ".json");
         try (Writer writer = new FileWriter(new File(path, jsonFilename))) {
-        gson.toJson(entry, writer);
+            gson.toJson(entry, writer);
         }
 
         // Guardar na memória
         files.add(entry);
     }
 
-    public void deleteEntry(String nomeArquivo) {
+    public void deleteEntry(String entryName) {
         // Construir os caminhos dos arquivos
-        File pdfFile = new File(path, nomeArquivo + ".pdf");
-        File jsonFile = new File(path, nomeArquivo + ".json");
+        File pdfFile = new File(path, entryName + ".pdf");
+        File jsonFile = new File(path, entryName + ".json");
       
         // Deletar arquivos físicos
         boolean pdfDeletado = false;
@@ -150,66 +150,66 @@ public class Directory {
                 files.removeIf(entry -> {
                 String entryPath = entry.getEntryPath(); // precisa de um getter
                 String nomeBase = new File(entryPath).getName().replace(".pdf", "");
-                return nomeBase.equals(nomeArquivo);
+                return nomeBase.equals(entryName);
             });
       
             System.out.println("Entrada removida da memória.");
         }
     }   
 
-    public void editEntry(String nomeArquivo) throws IOException {
+    public void editEntry(String entryName) throws IOException {
         // 1) Encontrar o Entry
         Entry alvo = null;
         for (Entry e : files) {
-            if (e.getFileNameBase().equals(nomeArquivo)) {
+            if (e.getFileNameBase().equals(entryName)) {
                 alvo = e;
                 break;
             }
         }
         if (alvo == null) {
-            System.out.println("Entry não encontrada: " + nomeArquivo);
+            System.out.println("Entry não encontrada: " + entryName);
           return;
         }
       
-        System.out.println("=== Editando entry: " + nomeArquivo + " ===");
+        System.out.println("=== Editando entry: " + entryName + " ===");
       
         // 2) Perguntar campos, mostrando valor atual e aceitando ENTER para manter
         // Autores
-        System.out.print("Autores atuais (" + String.join(", ", alvo.getAutores()) + "): ");
+        System.out.print("Autores atuais (" + String.join(", ", alvo.getAuthors()) + "): ");
         String line = scanner.nextLine().trim();
         if (!line.isEmpty()) {
             List<String> novos = Arrays.asList(line.split("\\s*,\\s*"));
-            alvo.setAutores(novos);
+            alvo.setAuthors(novos);
         }
       
         // Título
-        System.out.print("Título atual (" + alvo.getTitulo() + "): ");
+        System.out.print("Título atual (" + alvo.getTitle() + "): ");
         line = scanner.nextLine().trim();
         if (!line.isEmpty()) {
-            alvo.setTitulo(line);
+            alvo.setTitle(line);
         }
       
         // Subtítulo
-        String atualSub = alvo.getSubtitulo() == null ? "" : alvo.getSubtitulo();
+        String atualSub = alvo.getSubtitle() == null ? "" : alvo.getSubtitle();
         System.out.print("Subtítulo atual (" + (atualSub.isEmpty() ? "nenhum" : atualSub) + "): ");
         line = scanner.nextLine().trim();
         if (!line.isEmpty()) {
-            alvo.setSubtitulo(line);
+            alvo.setSubtitle(line);
         }
       
         // Disciplina
-        System.out.print("Disciplina atual (" + alvo.getDisciplina() + "): ");
+        System.out.print("Disciplina atual (" + alvo.getSubject() + "): ");
         line = scanner.nextLine().trim();
         if (!line.isEmpty()) {
-            alvo.setDisciplina(line);
+            alvo.setSubject(line);
         }
       
         // Ano
-        System.out.print("Ano atual (" + alvo.getAno() + "): ");
+        System.out.print("Ano atual (" + alvo.getYear() + "): ");
         line = scanner.nextLine().trim();
         if (!line.isEmpty()) {
             try {
-                alvo.setAno(Integer.parseInt(line));
+                alvo.setYear(Integer.parseInt(line));
             } catch (NumberFormatException ex) {
                 System.out.println("Formato de ano inválido. Mantendo valor anterior.");
             }
@@ -217,7 +217,7 @@ public class Directory {
       
         // 3) Salvar JSON atualizado
         Gson gson = new Gson();
-        String jsonFilename = nomeArquivo + ".json";
+        String jsonFilename = entryName + ".json";
         try (Writer writer = new FileWriter(new File(path, jsonFilename))) {
             gson.toJson(alvo, writer);
         }

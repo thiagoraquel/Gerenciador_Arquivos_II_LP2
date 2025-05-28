@@ -15,7 +15,6 @@ import java.util.Vector;
 
 
 public class Library {
-    // TODO: atributos
     Vector<Directory> directories = new Vector<>();
     String path;            // Caminho do diretório raiz do sistema de gerenciamento
     Scanner scanner;
@@ -201,36 +200,6 @@ public class Library {
     public Vector<Directory> getDirectories(){
         return directories;
     }
-
-    /**
-     * Organiza os arquivos em diretórios por tipo ou nome de autores
-     * 
-     * @param type forma de organização dos diretórios
-     */
-    public void organize (String type) {
-        
-    }
-    
-    /**
-     * Busca um arquivo pelo nome nos diretórios
-     * 
-     * @param file_name nomedo arquivo
-     * @return path do arquivo
-     */
-    public String search_file (String file_name) {
-        return "";
-    }
-
-    /**
-     * Busca um diretório pelo nome
-     * 
-     * @param file_directory nome do diretório
-     * @return path do diretório
-     */
-    public String search_directory (String directory_name) {
-        return "";
-    }
-
 }
 
  

@@ -4,50 +4,53 @@ import java.util.List;
 import java.io.File;  
 
 public class Entry {
-  private String tipo;           
-  private String filePath;       
-  private List<String> autores;
-  private String titulo;
-  private String subtitulo;      
-  private String disciplina;     
-  private int ano;
+  private String type;           
+  private String entryPath;       
+  private List<String> authors;
+  private String title;
+  private String subtitle;      
+  private String subject;     
+  private int year;
 
-  public Entry(String tipo, String filePath,
-               List<String> autores, String titulo,
-               String subtitulo, String disciplina,
-               int ano) {
-    this.tipo = tipo;
-    this.filePath = filePath;
-    this.autores = autores;
-    this.titulo = titulo;
-    this.subtitulo = subtitulo;
-    this.disciplina = disciplina;
-    this.ano = ano;
+  public Entry(String type, String entryPath,
+               List<String> authors, String title,
+               String subtitle, String subject,
+               int year) {
+    this.type = type;
+    this.entryPath = entryPath;
+    this.authors = authors;
+    this.title = title;
+    this.subtitle = subtitle;
+    this.subject = subject;
+    this.year = year;
   }
 
   public String getEntryPath() {
-    return filePath;
+    return entryPath;
   }
 
   public String getFileNameBase() {
-    return new File(filePath).getName().replaceFirst("\\.pdf$", "");
+    if (entryPath == null) return null;
+    String name = new File(entryPath).getName();
+    return name.replaceFirst("(?i)\\.pdf$", "");
   }
+  
 
   // --- Getters e Setters para edição ---
-  public List<String> getAutores() { return autores; }
-  public void setAutores(List<String> autores) { this.autores = autores; }
+  public List<String> getAuthors() { return authors; }
+  public void setAuthors(List<String> autores) { this.authors = autores; }
 
-  public String getTitulo() { return titulo; }
-  public void setTitulo(String titulo) { this.titulo = titulo; }
+  public String getTitle() { return title; }
+  public void setTitle(String titulo) { this.title = titulo; }
 
-  public String getSubtitulo() { return subtitulo; }
-  public void setSubtitulo(String subtitulo) { this.subtitulo = subtitulo; }
+  public String getSubtitle() { return subtitle; }
+  public void setSubtitle(String subtitulo) { this.subtitle = subtitulo; }
 
-  public String getDisciplina() { return disciplina; }
-  public void setDisciplina(String disciplina) { this.disciplina = disciplina; }
+  public String getSubject() { return subject; }
+  public void setSubject(String disciplina) { this.subject = disciplina; }
 
-  public int getAno() { return ano; }
-  public void setAno(int ano) { this.ano = ano; }
+  public int getYear() { return year; }
+  public void setYear(int ano) { this.year = ano; }
 
   // toString para exibir no terminal
   @Override
@@ -55,13 +58,13 @@ public class Entry {
     return String.format(
       "Entry[%s]\n  Tipo: %s\n  Autores: %s\n  Título: %s\n  Subtítulo: %s\n  Disciplina: %s\n  Ano: %d\n  Caminho: %s\n",
       getFileNameBase(),
-      tipo,
-      String.join(", ", autores),
-      titulo,
-      subtitulo == null ? "(nenhum)" : subtitulo,
-      disciplina,
-      ano,
-      filePath
+      type,
+      String.join(", ", authors),
+      title,
+      subtitle == null ? "(nenhum)" : subtitle,
+      subject,
+      year,
+      entryPath
     );
   }
 }

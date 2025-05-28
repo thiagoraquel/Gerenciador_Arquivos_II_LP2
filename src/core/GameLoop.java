@@ -61,40 +61,38 @@ public class GameLoop  {
         List<String> libs_on_file = config.getLibrariesNames();
 
         // Se o ValidLibraries.txt está vazio, assume-se que é a primeira inicialização
-        // Ou seja, ValidLibraries.txt sempre tem ao menos uma biblioteca, exceto na primeira init
         if (libs_on_file.isEmpty()) {
-            System.out.print(
-            "Não existe nenhuma biblioteca válida existente\n" + 
-            "Digite um nome válido para criar uma biblioteca: ");
-            
-            str_input = scanner.nextLine();
-            File dir = new File(str_input); 
-            
-            // Se diretório dado por usuário não existe
-            if (!dir.exists()) {
-                boolean success = dir.mkdirs();
-                // Cria uma nova biblioteca
-                if (success) {
-                    config.addLibrary(str_input);
-                } else {
-                    System.out.println("Falha ao criar o diretório.");
-                }
-            } 
+            System.out.println("Não existe nenhuma biblioteca válida existente.");
 
-            // Se nome de diretório dado por user existe
-            else { 
-                // TODO: Nome de primeira biblioteca já existe
-                // Perguntar por nome da biblioteca até que user dê um nome que ainda não foi usado
-                System.out.println("Diretório já existe, crie um diretório com um nome diferente: ");
+            while (true) {
+                System.out.print("Digite um nome válido para criar uma biblioteca: ");
+                str_input = scanner.nextLine().trim();
+
+                // Ignorar entradas vazias
+                if (str_input.isEmpty()) {
+                    System.out.println("Nome inválido. Tente novamente.");
+                    continue;
+                }
+
+                File dir = new File(str_input);
+
+                // Se diretório já existe, rejeita
+                if (dir.exists()) {
+                    System.out.println("Diretório já existe. Por favor, escolha outro nome.");
+                } else {
+                    boolean success = dir.mkdirs();
+                    if (success) {
+                        config.addLibrary(str_input);
+                        System.out.println("Biblioteca criada com sucesso: " + str_input);
+                        break;
+                    } else {
+                    System.out.println("Falha ao criar o diretório. Tente novamente.");
+                    }
+                }
             }
         } else {
             // Já existem nomes de bibliotecas no ValidLibraries.txt
             // Espera-se que sejam nomes de diretórios válidos
-            // O programa apenas faz bibliotecas válidas no ValidLibraries
-            // Ou seja, não deve tratar nada aqui (por enquanto)
-
-            // Dá erro aqui caso as bibliotecas tenham sido deletadas manualmente e o programa comece, pois os nomes da bibliotecas
-            // ainda estão no ValidLibraries.txt
         }
 
         // Verificar se os nomes em ValidLibraries.txt são válidos (existem e são diretórios)
@@ -102,10 +100,24 @@ public class GameLoop  {
 
         // Adicionar os paths das bibliotecas no ValidLibraries.txt ao vetor de bibliotecas
         List<String> validLibPaths = config.getLibrariesNames();
+        
+        // Adiciona bibliotecas válidas ao programa
         for (String libPath : validLibPaths) {
-            Library lib = new Library(libPath, scanner);
-            libraries.add(lib);
+            File dir = new File(libPath);
+            if (dir.exists() && dir.isDirectory()) {
+                Library lib = new Library(libPath, scanner);
+                libraries.add(lib);
+            } else {
+                System.out.println("Aviso: Diretório inválido ignorado: " + libPath);
+            }
         }
+
+        // (Opcional) Caso nenhuma biblioteca seja válida após remoção, notificar o usuário
+        if (libraries.isEmpty()) {
+            System.out.println("Nenhuma biblioteca válida foi encontrada. Por favor, reinicie e crie uma nova.");
+            end_loop = true;
+        }
+        
     }
 
     public void process_event() {
@@ -317,6 +329,7 @@ public class GameLoop  {
     }
       
     private void directoryState() {
+        library.listarArquivosDoSubdiretorioAtual();
         System.out.println("Escolha uma opção:");
         System.out.println("1. Adicionar arquivos");
         System.out.println("2. Editar arquivo");
