@@ -255,6 +255,7 @@ public class GameLoop  {
                 break;
             case 2:
                 System.out.println("Você escolheu buscar arquivos\n");
+                library.buscarArquivoPorNome();
                 break;
             case 3:
                 System.out.println("Você escolheu trocar biblioteca\n");

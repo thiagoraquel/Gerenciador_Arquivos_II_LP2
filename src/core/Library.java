@@ -46,6 +46,72 @@ public class Library {
         }
     }
 
+    public void buscarArquivoPorNome() {
+        System.out.print("Digite o nome do arquivo (ex: MeuSlide.pdf): ");
+        scanner.nextLine();
+        String nomeArquivo = scanner.nextLine().trim();
+      
+        if (!nomeArquivo.toLowerCase().endsWith(".pdf")) {
+            System.out.println("Erro: O nome do arquivo deve terminar com \".pdf\".");
+            return;
+        }
+      
+        boolean encontrado = false;
+      
+        for (Directory dir : directories) {
+            for (Entry entry : dir.files) {
+                File f = new File(entry.getEntryPath());
+                if (f.getName().equalsIgnoreCase(nomeArquivo)) {
+                System.out.println("Arquivo encontrado no subdiretório: " + dir.path);
+                System.out.println(entry);
+                encontrado = true;
+                break;
+                }
+            }
+            if (encontrado) break;
+        }
+      
+        if (!encontrado) {
+            System.out.println("Arquivo \"" + nomeArquivo + "\" não encontrado.");
+        }
+    }      
+
+    public void listarTodosArquivos() {
+        if (directories.isEmpty()) {
+            System.out.println("Nenhum subdiretório na biblioteca.");
+            return;
+        }
+      
+        System.out.println("=== Arquivos em todos os subdiretórios ===");
+        for (Directory dir : directories) {
+            System.out.println("Subdiretório: " + dir.path);
+            if (dir.files.isEmpty()) {
+                System.out.println("  (Nenhum arquivo)");
+            } else {
+                for (Entry entry : dir.files) {
+                System.out.println("  - " + entry.getFileNameBase());
+                }
+            }
+        }
+    }      
+
+    // Função alternativa para listar arquivos (caso precise)
+    public void listarArquivosDoSubdiretorioAtual() {
+        if (SubDir == null) {
+            System.out.println("Nenhum subdiretório selecionado.");
+            return;
+        }
+        
+        System.out.println("=== Arquivos no subdiretório atual: " + SubDir.path + " ===");
+        if (SubDir.files.isEmpty()) {
+            System.out.println("(Nenhum arquivo)");
+        } else {
+            for (Entry entry : SubDir.files) {
+            System.out.println("- " + entry.getFileNameBase());
+            }
+        }
+    }
+      
      /**
    * Para delegar a criação de uma nova Entry, basta escolher
    * qual subdiretório usar e chamar o addEntry dele.
