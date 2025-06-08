@@ -28,10 +28,12 @@ public class Directory {
     Vector<Entry> files = new Vector<>();
     private Scanner scanner;
     String path;
+    CollectionManager collectionManager;
 
     public Directory(String path, Scanner scanner) {
         this.path = path;
         this.scanner = scanner;
+        this.collectionManager = new CollectionManager(this); // passa o próprio diretório
 
         File folder = new File(path);
         File[] fileList = folder.listFiles();
