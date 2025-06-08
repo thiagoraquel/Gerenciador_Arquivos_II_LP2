@@ -14,16 +14,16 @@ import java.util.Vector;
  */
 
 
-public class Library {
+ public class Library {
     Vector<Directory> directories = new Vector<>();
     String path;            // Caminho do diretório raiz do sistema de gerenciamento
     Scanner scanner;
-    Directory SubDir;           // Subdiretório atual/em uso da biblioteca
-
+    Directory SubDir;       // Subdiretório atual/em uso da biblioteca
+  
     public Library(String path, Scanner scanner) {
         this.path = path;
         this.scanner = scanner;
-      
+    
         // Criar os subdiretórios se ainda não existirem
         String[] subdirs = { "Livros", "NotasDeAulas", "Slides" };
         for (String dirName : subdirs) {
@@ -31,19 +31,28 @@ public class Library {
             if (!subdir.exists()) {
                 subdir.mkdirs(); // cria diretório (e pais, se necessário)
             }
+    
+            // Criar subdiretório "Colecoes" dentro de cada um
+            File colecoesDir = new File(subdir, "Colecoes");
+            if (!colecoesDir.exists()) {
+                colecoesDir.mkdirs();
+            }
         }
-      
+    
         // Carregar os diretórios da biblioteca
         File folder = new File(path);
         File[] files = folder.listFiles();
-      
+    
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    directories.add(new Directory(file.getPath(), scanner));                }
+                    directories.add(new Directory(file.getPath(), scanner));
+                }
             }
         }
     }
+  
+  
 
     public void buscarArquivoPorNome() {
         System.out.print("Digite o nome do arquivo (ex: MeuSlide.pdf): ");
