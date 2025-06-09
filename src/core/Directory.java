@@ -79,6 +79,44 @@ public class Directory {
 
         System.out.print("Máximo de entradas: ");
         int max_entrys = scanner.nextInt();
+
+        scanner.nextLine(); // limpar o \n deixado pelo nextInt()
+
+        // 2) Listar entradas numeradas
+        System.out.println("\nEntradas disponíveis:");
+        int i = 1;
+        for (Entry entry : files) {
+            System.out.println(i + ") - " + entry.getFileNameBase());
+            i++;
+        }
+
+        // 3) Permitir seleção
+        System.out.print("\nDigite os números das entradas desejadas (separe por vírgula): ");
+        String[] escolhas = scanner.nextLine().split("\\s*,\\s*");
+
+        Vector<Entry> selecionadas = new Vector<>();
+        for (String escolha : escolhas) {
+            if (selecionadas.size() >= max_entrys) {
+                System.out.println("Número máximo de entradas atingido (" + max_entrys + ").");
+                break;
+            }
+          
+            try {
+                int index = Integer.parseInt(escolha) - 1;
+                if (index >= 0 && index < files.size()) {
+                    Entry entrada = files.get(index);
+                    if (!selecionadas.contains(entrada)) {
+                    selecionadas.add(entrada);
+                    } else {
+                    System.out.println("Entrada " + (index + 1) + " já foi selecionada.");
+                    }
+                } else {
+                    System.out.println("Número inválido: " + (index + 1));
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida: " + escolha);
+            }
+        }
     }
    /**
     * Copia o PDF para este diretório e cria o arquivo JSON com os metadados.
