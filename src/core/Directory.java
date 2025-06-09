@@ -33,7 +33,10 @@ public class Directory {
     public Directory(String path, Scanner scanner) {
         this.path = path;
         this.scanner = scanner;
-        this.collectionManager = new CollectionManager(this); // passa o próprio diretório
+        
+        // Collection Manager tem que ser o diretório em questão (e não o Colecoes)
+        // Pois ele realizará operações em ambos
+        this.collectionManager = new CollectionManager(this, scanner); // passa o próprio diretório
 
         File folder = new File(path);
         File[] fileList = folder.listFiles();
@@ -63,6 +66,20 @@ public class Directory {
         path = null;
     }  
 
+    public void createCollection(){
+
+        String type_entry = new File(path).getName();
+
+        // 1) Perguntar dados ao usuário
+        System.out.print("Autor(es) (separe por vírgula): ");
+        List<String> autores = Arrays.asList(scanner.nextLine().split("\\s*,\\s*"));
+
+        System.out.print("Nome da Coleção: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Máximo de entradas: ");
+        int max_entrys = scanner.nextInt();
+    }
    /**
     * Copia o PDF para este diretório e cria o arquivo JSON com os metadados.
     * @param pdfSourcePath caminho completo para o PDF de origem
@@ -95,7 +112,8 @@ public class Directory {
         Path destPdfPath = Paths.get(path, pdfSrc.getName());
         Files.copy(pdfSrc.toPath(), destPdfPath, StandardCopyOption.REPLACE_EXISTING);
 
-        // Cria o Entry
+        // Criar o Entry
+
         // relativo é o caminho relativo ao diretório atual (path)
         String relativo = new File(path).toPath()
                             .getFileName().resolve(pdfSrc.getName())

@@ -2,24 +2,24 @@ package core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.String;
+import java.util.Scanner;
+
 
 public class CollectionManager {
-    Directory directory;
+    Directory directory;    // Usaremos o directory em questão para acessar
+                            // seu respectivo colecoes
     List<Collection> colecoes = new ArrayList<>();
+    //private Scanner scanner;
+    String path;            // library\subdir\Colecoes
 
-    public CollectionManager(Directory directory) {
+    public CollectionManager(Directory directory, Scanner scanner) {
         this.directory = directory;
-        // opcional: carregar coleções persistidas
+        //this.scanner = scanner;
+        this.path = (directory.getPath() + "\\Colecoes");
     }
 
-    public void criarColecao(String tipo, String autor, int max, String nome, List<Entry> entradas) {
-        if (entradas.size() > max) {
-          System.out.println("Erro: número de entradas excede o limite permitido.");
-          return;
-        }
-    
-        Collection nova = new Collection(directory, tipo, autor, max, nome, entradas);
-        colecoes.add(nova);
-        // opcional: salvar imediatamente em arquivo .bib
+    public void createCollection() {
+        
     }
 }

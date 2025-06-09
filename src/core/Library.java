@@ -52,9 +52,11 @@ import java.util.Vector;
         }
     }
   
-  
+    public void CreateCollection() {
+        SubDir.createCollection();
+    }
 
-    public void buscarArquivoPorNome() {
+    public void searchArchiveByName() {
         System.out.print("Digite o nome do arquivo (ex: MeuSlide.pdf): ");
         scanner.nextLine();
         String nomeArquivo = scanner.nextLine().trim();
@@ -84,7 +86,7 @@ import java.util.Vector;
         }
     }      
 
-    public void listarTodosArquivos() {
+    public void listAllArchives() {
         if (directories.isEmpty()) {
             System.out.println("Nenhum subdiretório na biblioteca.");
             return;
@@ -104,7 +106,7 @@ import java.util.Vector;
     }      
 
     // Função alternativa para listar arquivos (caso precise)
-    public void listarArquivosDoSubdiretorioAtual() {
+    public void listArchivesCurrentDir() {
         if (SubDir == null) {
             System.out.println("Nenhum subdiretório selecionado.");
             return;
