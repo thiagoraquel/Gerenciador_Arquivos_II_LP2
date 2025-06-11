@@ -68,11 +68,11 @@ public class Directory {
 
     public void createCollection(){
 
-        String type_entry = new File(path).getName();
+        String type_collection = new File(path).getName();
 
         // 1) Perguntar dados ao usuário
-        System.out.print("Autor(es) (separe por vírgula): ");
-        List<String> autores = Arrays.asList(scanner.nextLine().split("\\s*,\\s*"));
+        System.out.print("Autor: ");
+        String autor = scanner.nextLine();
 
         System.out.print("Nome da Coleção: ");
         String name = scanner.nextLine();
@@ -106,9 +106,9 @@ public class Directory {
                 if (index >= 0 && index < files.size()) {
                     Entry entrada = files.get(index);
                     if (!selecionadas.contains(entrada)) {
-                    selecionadas.add(entrada);
+                        selecionadas.add(entrada);
                     } else {
-                    System.out.println("Entrada " + (index + 1) + " já foi selecionada.");
+                        System.out.println("Entrada " + (index + 1) + " já foi selecionada.");
                     }
                 } else {
                     System.out.println("Número inválido: " + (index + 1));
@@ -117,6 +117,7 @@ public class Directory {
                 System.out.println("Entrada inválida: " + escolha);
             }
         }
+        collectionManager.createCollection(type_collection, autor, name, max_entrys, selecionadas);
     }
    /**
     * Copia o PDF para este diretório e cria o arquivo JSON com os metadados.

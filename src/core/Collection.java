@@ -4,19 +4,18 @@ import java.util.List;
 import java.lang.String;
 
 public class Collection {
-    Directory directory;
+    String type;
     List<Entry> entradas;
     int maxEntradas;
     String nome;
     String autor;
     String tipo;
   
-    public Collection(Directory directory, String tipo, String autor, int maxEntradas, String nome, List<Entry> entradas) {
-      this.directory = directory;
+    public Collection(String tipo, String autor, String nome, int maxEntradas, List<Entry> entradas) {
       this.tipo = tipo;
       this.autor = autor;
-      this.maxEntradas = maxEntradas;
       this.nome = nome;
+      this.maxEntradas = maxEntradas;
   
       if (entradas.size() > maxEntradas) {
         throw new IllegalArgumentException("Entradas excedem o limite da coleção.");

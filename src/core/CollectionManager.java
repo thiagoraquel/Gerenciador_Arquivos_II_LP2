@@ -19,7 +19,9 @@ public class CollectionManager {
         this.path = (directory.getPath() + "\\Colecoes");
     }
 
-    public void createCollection() {
-        
+    public void createCollection(String type, String author, String name, int max_entrys, List<Entry> entrys) {
+    Collection nova = new Collection(type, author, name, max_entrys, entrys);
+    colecoes.add(nova);
+    System.out.println("Coleção \"" + name + "\" criada com sucesso com " + entrys.size() + " entrada(s).");        
     }
 }
