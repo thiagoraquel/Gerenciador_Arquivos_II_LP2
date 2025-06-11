@@ -40,6 +40,9 @@ public class Entry {
   public List<String> getAuthors() { return authors; }
   public void setAuthors(List<String> autores) { this.authors = autores; }
 
+  public String getType() { return type; }
+  public void getType(String type) { this.type = type; }
+
   public String getTitle() { return title; }
   public void setTitle(String titulo) { this.title = titulo; }
 
