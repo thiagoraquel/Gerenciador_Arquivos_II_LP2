@@ -330,6 +330,7 @@ public class GameLoop  {
       
     private void directoryState() {
         library.listArchivesCurrentDir();
+        library.listCollectionsCurrentDir();
         System.out.println("Escolha uma opção:");
         System.out.println("1. Adicionar arquivos");
         System.out.println("2. Editar arquivo");

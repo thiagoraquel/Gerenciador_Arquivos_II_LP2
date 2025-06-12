@@ -103,7 +103,11 @@ import java.util.Vector;
                 }
             }
         }
-    }      
+    }
+    
+    public void listCollectionsCurrentDir(){
+        SubDir.listCollectionsCurrentDir();
+    }
 
     // Função alternativa para listar arquivos (caso precise)
     public void listArchivesCurrentDir() {

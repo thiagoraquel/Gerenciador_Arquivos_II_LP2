@@ -119,6 +119,7 @@ public class Directory {
         }
         collectionManager.createCollection(type_collection, autor, name, max_entrys, selecionadas);
     }
+    
    /**
     * Copia o PDF para este diretório e cria o arquivo JSON com os metadados.
     * @param pdfSourcePath caminho completo para o PDF de origem
@@ -285,6 +286,10 @@ public class Directory {
         System.out.println("\n=== Entry atualizado ===");
         System.out.println(alvo);
     }      
+
+    public void listCollectionsCurrentDir(){
+        collectionManager.listCollections();
+    }
     
     public String getPath() {
       return path;
