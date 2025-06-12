@@ -45,7 +45,7 @@ public class CollectionManager {
             writer.println("  title = {" + entry.getTitle() + 
                 (entry.getSubtitle() != null && !entry.getSubtitle().isEmpty() ? ": " + entry.getSubtitle() : "") + "},");
             writer.println("  year = {" + entry.getYear() + "},");
-            writer.println("  note = {" + entry.getSubject() + "}");
+            writer.println("  subject = {" + entry.getSubject() + "}");
             writer.println("}\n");
             }
 
