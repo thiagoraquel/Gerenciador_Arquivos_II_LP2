@@ -173,24 +173,39 @@ public class CollectionManager {
      * @throws IOException Se ocorrer erro durante a escrita do arquivo.
      */
     public void zipCollection(Collection collection, String outputPath, String zipFileName) throws IOException {
-        // Certifica-se que o diretório existe
+        // Certifica-se que o diretório de saída existe
         Files.createDirectories(Paths.get(outputPath));
-
+    
         String zipFullPath = outputPath + File.separator + zipFileName + ".zip";
-
+    
+        // O diretório onde os arquivos PDF estão armazenados
+        File pdfDir = new File(getPath()).getParentFile();
+    
         try (FileOutputStream fos = new FileOutputStream(zipFullPath);
-            ZipOutputStream zos = new ZipOutputStream(fos)) {
-
-                for (Entry entry : collection.getEntradas()) {
-                    String path = entry.getEntryPath();
-                    File pdfFile = new File(path); // converte o caminho em um objeto File
-                
-                    if (pdfFile.exists()) {
-                        addFileToZip(pdfFile, zos);
-                    }
+             ZipOutputStream zos = new ZipOutputStream(fos)) {
+    
+            for (Entry entry : collection.getEntradas()) {
+                String relativePath = entry.getEntryPath();
+    
+                // Garante que o caminho tenha a extensão .pdf
+                if (!relativePath.toLowerCase().endsWith(".pdf")) {
+                    relativePath += ".pdf";
                 }
+    
+                System.out.println("Tentando adicionar: " + relativePath);
+    
+                File pdfFile = new File(pdfDir, relativePath); // Caminho completo para o PDF
+    
+                if (pdfFile.exists()) {
+                    addFileToZip(pdfFile, zos);
+                } else {
+                    System.err.println("Arquivo não encontrado: " + pdfFile.getAbsolutePath());
+                }
+            }
         }
     }
+    
+    
 
     private void addFileToZip(File file, ZipOutputStream zos) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
@@ -217,6 +232,10 @@ public class CollectionManager {
         for (Collection c : colecoes) {
             System.out.println("- " + c.getNome());
         }
+    }
+
+    public String getPath(){
+        return path;
     }
     
     public List<Collection> getCollections(){
