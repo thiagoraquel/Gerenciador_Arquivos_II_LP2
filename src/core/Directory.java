@@ -158,6 +158,8 @@ public class Directory {
         String relativo = new File(path).toPath()
                             .getFileName().resolve(pdfSrc.getName())
                             .toString();
+        System.out.print(relativo);
+
 
         String tipo = new File(path).getName(); // nome da pasta (ex: "Livros", "NotasDeAulas")
         
@@ -285,7 +287,53 @@ public class Directory {
         // 4) Mostrar no terminal o Entry atualizado
         System.out.println("\n=== Entry atualizado ===");
         System.out.println(alvo);
-    }      
+    }
+    
+    public void zipCollectionFromInput() {
+
+        List<Collection> collections = collectionManager.getCollections();
+
+        if (collections.isEmpty()) {
+            System.out.println("Nenhuma coleção encontrada no diretório.");
+            return;
+        }
+
+        // Lista as coleções disponíveis numericamente
+        System.out.println("Coleções disponíveis:");
+        for (int i = 0; i < collections.size(); i++) {
+            System.out.printf("%d. %s%n", i + 1, collections.get(i).getNome());
+        }
+
+        System.out.print("Digite o número da coleção a ser compactada: ");
+        int choice = -1;
+
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Digite um número.");
+            return;
+        }
+
+        if (choice < 1 || choice > collections.size()) {
+            System.out.println("Número fora do intervalo.");
+            return;
+        }
+
+        Collection selectedCollection = collections.get(choice - 1);
+    
+        System.out.print("Digite o caminho de saída do arquivo ZIP: ");
+        String outputPath = scanner.nextLine();
+    
+        System.out.print("Digite o nome desejado para o arquivo .zip (ex: minha_colecao.zip): ");
+        String zipFileName = scanner.nextLine();
+    
+        try {
+            collectionManager.zipCollection(selectedCollection, outputPath, zipFileName);
+            System.out.println("Arquivo ZIP criado com sucesso em: " + outputPath + "/" + zipFileName);
+        } catch (IOException e) {
+            System.out.println("Erro ao criar o arquivo ZIP: " + e.getMessage());
+        }
+    }
 
     public void listCollectionsCurrentDir(){
         collectionManager.listCollections();

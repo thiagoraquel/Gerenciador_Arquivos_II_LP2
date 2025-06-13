@@ -190,6 +190,10 @@ import java.util.Vector;
         path = null; // opcional, se quiser invalidar completamente a instância
     }
     
+    public void packCollection(){
+        SubDir.zipCollectionFromInput();
+    }
+
     private void deleteRecursive(File file) {
         if (file.isDirectory()) {
             for (File sub : file.listFiles()) {
@@ -198,7 +202,6 @@ import java.util.Vector;
         }
         file.delete();
     }
-      
     
     public String getPath() {
         return path;

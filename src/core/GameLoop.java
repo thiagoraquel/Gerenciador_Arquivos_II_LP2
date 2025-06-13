@@ -337,6 +337,8 @@ public class GameLoop  {
         System.out.println("3. Deletar arquivo");
         System.out.println("4. Voltar para biblioteca");
         System.out.println("5. Criar coleção");
+        System.out.println("6. Empacotar coleção");
+
         System.out.print("Opção: ");
       
         num_input = scanner.nextInt();
@@ -368,6 +370,11 @@ public class GameLoop  {
             case 5:
                 System.out.println("Você escolheu criar coleção\n");
                 library.CreateCollection();
+                state = e_states.LIBRARY;
+                break;
+            case 6:
+                System.out.println("Você escolheu empacotar coleção\n");
+                library.packCollection();
                 state = e_states.LIBRARY;
                 break;
             default:

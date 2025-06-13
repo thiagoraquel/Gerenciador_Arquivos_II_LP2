@@ -9,8 +9,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.zip.*;
 
 public class CollectionManager {
     Directory directory;    // Usaremos o directory em questão para acessar
@@ -160,7 +163,49 @@ public class CollectionManager {
             return null;
         }
     }
-    
+
+    /**
+     * Cria um arquivo .zip com os PDFs de uma coleção.
+     *
+     * @param collection A coleção cujas entradas serão empacotadas.
+     * @param outputPath Caminho do diretório onde o .zip será criado.
+     * @param zipFileName Nome do arquivo .zip (sem extensão).
+     * @throws IOException Se ocorrer erro durante a escrita do arquivo.
+     */
+    public void zipCollection(Collection collection, String outputPath, String zipFileName) throws IOException {
+        // Certifica-se que o diretório existe
+        Files.createDirectories(Paths.get(outputPath));
+
+        String zipFullPath = outputPath + File.separator + zipFileName + ".zip";
+
+        try (FileOutputStream fos = new FileOutputStream(zipFullPath);
+            ZipOutputStream zos = new ZipOutputStream(fos)) {
+
+                for (Entry entry : collection.getEntradas()) {
+                    String path = entry.getEntryPath();
+                    File pdfFile = new File(path); // converte o caminho em um objeto File
+                
+                    if (pdfFile.exists()) {
+                        addFileToZip(pdfFile, zos);
+                    }
+                }
+        }
+    }
+
+    private void addFileToZip(File file, ZipOutputStream zos) throws IOException {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            ZipEntry zipEntry = new ZipEntry(file.getName());
+            zos.putNextEntry(zipEntry);
+
+            byte[] buffer = new byte[4096];
+            int len;
+            while ((len = fis.read(buffer)) > 0) {
+                zos.write(buffer, 0, len);
+            }
+
+            zos.closeEntry();
+        }
+    }
 
     public void listCollections() {
         if (colecoes.isEmpty()) {
@@ -174,4 +219,7 @@ public class CollectionManager {
         }
     }
     
+    public List<Collection> getCollections(){
+        return colecoes;
+    }
 }
