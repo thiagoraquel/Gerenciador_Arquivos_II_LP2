@@ -15,9 +15,10 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 - Menu em terminal com navegação simples
 
 ## ✅ Implementação
-### Digaram de Estados
+### Diagrama de Estados
 ![Diagrama de Estados](imgs/diagrama.png)
 ### To-Do
+1º UNIDADE:
 - [x] Base do projeto - JÚLIA
 - [x] Leitura do path das bibliotecas raiz existentes no metodo `void initialize()` da classe `GameLoop` - THIAGO
 - [x] STARTING
@@ -28,43 +29,28 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 - [ ] ROOT
     - [x] Exibir opçõe do MENU - JÚLIA
     - [x] Validar as entradas do _path_ - JÚLIA
-    - [ ] Operações da biblioteca (classe `Library`) - HEITOR
+    - [x] Operações da biblioteca (classe `Library`) - HEITOR
     - [x] Alterar o estado e validar fluxo do loop - JÚLIA
  - [ ] DIRECTORY
     - [x] Exibir opçõe do MENU - JÚLIA
     - [x] Validar as entradas do _path_ - JÚLIA
-    - [ ] Operações dos arquivos (classe `File`)  - MARCOS
+    - [x] Operações dos arquivos (classe `File`)  - MARCOS
     - [x] Alterar o estado e validar fluxo do loop - JÚLIA
 - [x] DELETE - JÚLIA
 - [x] QUITTING - JÚLIA
 
-- [x] 2A UNIDADE
-- [x] CRIAÇÃO DE COLEÇÃO
-- [X] ADICIONAR ENTRADAS A UMA COLEÇÃO
-- [X] REMOVER ENTRADAS DE UMA COLEÇÃO
-- [X] GERAÇÃO DE ARQUIVOS DE REFERÊNCIA
-- [X] EMPACOTAMENTO DE COLEÇÃO
-- [] LISTAR COLEÇÕES
-- [] INTERFACES
-- [] CLASSES GENÉRICAS
-- [] EXCEÇÕES
+- 2º UNIDADE:
+- [x] Criação de coleção
+- [X] Adiconar entradas a uma coleção
+- [X] Remover entradas de uma coleção
+- [X] Geração de arquivos de referência
+- [X] Empacotamento de coleção
+- [] Listar coleções
+- [] Interfaces
+- [] Classes genêricas
+- [] Exceções
 
-## 📁 Estrutura de Pastas - DESATUALIZADO
-```
-Gerenciador_Arquivos/
-├── src/                # Código-fonte em Java
-│   ├── app/            # Ponto de entrada e loop principal
-│   ├── core/           # Lógica de negócio (biblioteca, entradas, persistência)
-│   ├── menu/           # Menu textual interativo
-│   └── utils/          # Funções auxiliares (como cópia de arquivos)
-├── data/               # Arquivo config.txt com caminho da biblioteca ativa
-├── build/              # Arquivos compilados .class
-├── README.md           # Este arquivo
-├── run.sh              # Script para compilar e rodar
-└── .gitignore          # Arquivos a serem ignorados no Git
-```
-
-## ⚙️ Como Compilar e Executar -DESATUALIZADO
+## ⚙️ Como Compilar e Executar
 
 ### Pré-requisitos
 - Java 11 ou superior instalado
