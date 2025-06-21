@@ -45,8 +45,6 @@ public class GameLoop  {
     Library library;                            // biblioteca que esta sendo acessada
     Config config = new Config();               // configuração de inicialização
 
-    String str_input;                         // Entrada de string do terminal
-    int num_input;                            // Entrada de número do terminal
     public static final Scanner scanner = new Scanner(System.in); // Scanner do terminal
 
     /**
@@ -59,6 +57,7 @@ public class GameLoop  {
 
     public void initialize(){
         List<String> libs_on_file = config.getLibrariesNames();
+        String input;
 
         // Se o ValidLibraries.txt está vazio, assume-se que é a primeira inicialização
         if (libs_on_file.isEmpty()) {
@@ -66,15 +65,15 @@ public class GameLoop  {
 
             while (true) {
                 System.out.print("Digite um nome válido para criar uma biblioteca: ");
-                str_input = scanner.nextLine().trim();
+                input = scanner.nextLine().trim();
 
                 // Ignorar entradas vazias
-                if (str_input.isEmpty()) {
+                if (input.isEmpty()) {
                     System.out.println("Nome inválido. Tente novamente.");
                     continue;
                 }
 
-                File dir = new File(str_input);
+                File dir = new File(input);
 
                 // Se diretório já existe, rejeita
                 if (dir.exists()) {
@@ -82,8 +81,8 @@ public class GameLoop  {
                 } else {
                     boolean success = dir.mkdirs();
                     if (success) {
-                        config.addLibrary(str_input);
-                        System.out.println("Biblioteca criada com sucesso: " + str_input);
+                        config.addLibrary(input);
+                        System.out.println("Biblioteca criada com sucesso: " + input);
                         break;
                     } else {
                     System.out.println("Falha ao criar o diretório. Tente novamente.");
@@ -103,6 +102,7 @@ public class GameLoop  {
         
         // Adiciona bibliotecas válidas ao programa
         for (String libPath : validLibPaths) {
+            //System.out.println(libPath);
             File dir = new File(libPath);
             if (dir.exists() && dir.isDirectory()) {
                 Library lib = new Library(libPath, scanner);
@@ -122,7 +122,7 @@ public class GameLoop  {
 
     public void process_event() {
         if (state == e_states.STARTING) {
-            // Pede para o usuário informar o nome do repositório que é a biblioteca raiz
+            
         } else if (state == e_states.QUITTING) {
             end_loop = true;
         }
@@ -184,9 +184,10 @@ public class GameLoop  {
         System.out.println("2. Criar nova biblioteca");
         System.out.print("Opção: ");
       
-        num_input = scanner.nextInt();
+        int option = scanner.nextInt();
+        scanner.nextLine(); // consumir quebra de linha
       
-        switch (num_input) {
+        switch (option) {
             case 1:
                 selectLibrary();
                 break;
@@ -208,10 +209,10 @@ public class GameLoop  {
         }
       
         System.out.print("\nDigite o número da biblioteca: ");
-        num_input = scanner.nextInt();
+        int option = scanner.nextInt();
       
-        if (num_input >= 1 && num_input <= libraries.size()) {
-            library = libraries.get(num_input - 1);
+        if (option >= 1 && option <= libraries.size()) {
+            library = libraries.get(option - 1);
             System.out.println("Biblioteca selecionada: " + library.getPath() + "\n");
             state = e_states.LIBRARY;
         } else {
@@ -223,16 +224,16 @@ public class GameLoop  {
         System.out.println("Você escolheu criar nova biblioteca.\n");
         System.out.print("Digite o nome da nova biblioteca (sem espaços): ");
         scanner.nextLine(); // consumir quebra de linha
-        str_input = scanner.nextLine();
+        String input = scanner.nextLine();
       
-        File newDir = new File(str_input);
+        File newDir = new File(input);
         if (newDir.exists()) {
             System.out.println("Já existe uma biblioteca com esse nome.");
         } else {
             if (newDir.mkdirs()) {
-                Library newLibrary = new Library(str_input, scanner);
+                Library newLibrary = new Library(input, scanner);
                 libraries.add(newLibrary);
-                config.addLibrary(str_input);
+                config.addLibrary(input);
                 System.out.println("Biblioteca criada com sucesso: " + newLibrary.getPath());
             } else {
                 System.out.println("Erro ao criar diretório da nova biblioteca.");
@@ -258,9 +259,9 @@ public class GameLoop  {
         System.out.println("5. Sair");
         System.out.print("Opção: ");
       
-        num_input = scanner.nextInt();
+        int option = scanner.nextInt();
       
-        switch (num_input) {
+        switch (option) {
             case 1:
                 System.out.println("Você escolheu acessar subdiretório\n");
                 selectSubdir();
@@ -274,7 +275,7 @@ public class GameLoop  {
                 state = e_states.STARTING;
                 break;
             case 4:
-                System.out.println("Você escolheu deletara atual biblioteca\n");
+                System.out.println("Você escolheu deletar a atual biblioteca\n");
                 state = e_states.STARTING;
                 library.deleteLibrary();       // limpa arquivos e memória
                 libraries.remove(library);    // remove da lista global
@@ -304,21 +305,21 @@ public class GameLoop  {
         }
       
         System.out.print("Número da opção: ");
-        scanner.nextLine(); // consumir \n do nextInt anterior
-        str_input = scanner.nextLine();
+        scanner.nextLine(); // consumir quebra de linha
+        String input = scanner.nextLine();
       
-        if (str_input.isEmpty()) {
+        if (input.isEmpty()) {
             System.out.println("Entrada vazia. Digite um número válido.");
             return;
         }
-      
+        int num_input;
         try {
-            num_input = Integer.parseInt(str_input);
+            num_input = Integer.parseInt(input);
         } catch (NumberFormatException e) {
             System.out.println("Formato inválido. Digite um número.");
             return;
         }
-      
+        
         if (num_input >= 1 && num_input <= dirs.size()) {
             Directory currentSubdir = dirs.get(num_input - 1);
             library.setCurrentSubdir(new File(currentSubdir.getPath()).getName());
@@ -338,30 +339,32 @@ public class GameLoop  {
         System.out.println("4. Voltar para biblioteca");
         System.out.println("5. Criar coleção");
         System.out.println("6. Empacotar coleção");
+        System.out.println("7. Adicionar entrada em coleção");
+        System.out.println("8. Remover entrada coleção");
 
         System.out.print("Opção: ");
       
-        num_input = scanner.nextInt();
+        int option = scanner.nextInt();
         scanner.nextLine(); // consumir quebra de linha
-      
-        switch (num_input) {
+        String input;
+        switch (option) {
             case 1:
                 System.out.println("Você escolheu adicionar arquivos\n");
                 System.out.print("Digite o caminho do arquivo PDF (ex: pdfs/MeuSlide.pdf): ");
-                str_input = scanner.nextLine();
-                library.addEntry(str_input);
+                input = scanner.nextLine();
+                library.addEntry(input);
                 break;
             case 2:
                 System.out.println("Você escolheu editar arquivos\n");
                 System.out.print("Digite o nome do arquivo (ex: MeuSlide): ");
-                str_input = scanner.nextLine();
-                library.editEntry(str_input);
+                input = scanner.nextLine();
+                library.editEntry(input);
                 break;
             case 3:
                 System.out.println("Você escolheu deletar arquivo\n");
                 System.out.print("Digite o nome do arquivo (ex: MeuSlide): ");
-                str_input = scanner.nextLine();
-                library.deleteEntry(str_input);
+                input = scanner.nextLine();
+                library.deleteEntry(input);
                 break;
             case 4:
                 System.out.println("Você escolheu voltar para biblioteca\n");
@@ -370,13 +373,19 @@ public class GameLoop  {
             case 5:
                 System.out.println("Você escolheu criar coleção\n");
                 library.CreateCollection();
-                state = e_states.LIBRARY;
                 break;
             case 6:
                 System.out.println("Você escolheu empacotar coleção\n");
                 library.packCollection();
-                state = e_states.LIBRARY;
                 break;
+            case 7:
+                System.out.println("Você escolheu adicionar entrada em coleção\n");
+                library.addEntryToCollection();
+                break;
+            case 8:
+                System.out.println("Você escolheu remover entrada em coleção\n");
+                library.removeEntryFromCollection();
+                break;    
             default:
                 System.out.println("Opção inválida.\n");
         }

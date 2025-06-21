@@ -38,6 +38,17 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 - [x] DELETE - JÚLIA
 - [x] QUITTING - JÚLIA
 
+- [x] 2A UNIDADE
+- [x] CRIAÇÃO DE COLEÇÃO
+- [X] ADICIONAR ENTRADAS A UMA COLEÇÃO
+- [X] REMOVER ENTRADAS DE UMA COLEÇÃO
+- [X] GERAÇÃO DE ARQUIVOS DE REFERÊNCIA
+- [X] EMPACOTAMENTO DE COLEÇÃO
+- [] LISTAR COLEÇÕES
+- [] INTERFACES
+- [] CLASSES GENÉRICAS
+- [] EXCEÇÕES
+
 ## 📁 Estrutura de Pastas - DESATUALIZADO
 ```
 Gerenciador_Arquivos/

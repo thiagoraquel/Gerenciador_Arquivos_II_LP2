@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.zip.*;
+import java.util.Iterator;
 
 public class CollectionManager {
     Directory directory;    // Usaremos o directory em questão para acessar
@@ -205,7 +206,67 @@ public class CollectionManager {
         }
     }
     
-    
+    /**
+ * Adiciona uma nova Entry a uma coleção existente, se não exceder o limite máximo.
+ */
+public boolean addEntryToCollection(String collectionName, Entry newEntry) {
+    for (Collection col : colecoes) {
+        if (col.getNome().equalsIgnoreCase(collectionName)) {
+            List<Entry> entradas = col.getEntradas();
+            if (entradas.size() >= col.maxEntradas) {
+                System.out.println("Não é possível adicionar: limite máximo de entradas atingido para a coleção \"" + collectionName + "\".");
+                return false;
+            }
+            entradas.add(newEntry);
+            System.out.println("Entrada adicionada à coleção \"" + collectionName + "\" com sucesso.");
+            
+            // Atualiza o arquivo .bib
+            saveAsBib(col, Paths.get(path, collectionName + ".bib").toString());
+            return true;
+        }
+    }
+    System.out.println("Coleção \"" + collectionName + "\" não encontrada.");
+    return false;
+}
+
+/**
+ * Remove uma Entry pelo ID (nome base do arquivo) da coleção especificada.
+ * Remove a coleção se ela ficar vazia.
+ */
+public boolean removeEntryFromCollection(String collectionName, String entryId) {
+    Iterator<Collection> it = colecoes.iterator();
+
+    while (it.hasNext()) {
+        Collection col = it.next();
+        if (col.getNome().equalsIgnoreCase(collectionName)) {
+            List<Entry> entradas = col.getEntradas();
+            boolean removed = entradas.removeIf(e -> e.getFileNameBase().equalsIgnoreCase(entryId));
+
+            if (removed) {
+                System.out.println("Entrada \"" + entryId + "\" removida da coleção \"" + collectionName + "\".");
+                
+                if (entradas.isEmpty()) {
+                    it.remove(); // Remove a coleção da lista
+                    // Remove também o arquivo .bib
+                    File bibFile = new File(Paths.get(path, collectionName + ".bib").toString());
+                    if (bibFile.exists()) bibFile.delete();
+                    System.out.println("Coleção \"" + collectionName + "\" foi removida pois não possui mais entradas.");
+                } else {
+                    // Atualiza o arquivo .bib
+                    saveAsBib(col, Paths.get(path, collectionName + ".bib").toString());
+                }
+                return true;
+            } else {
+                System.out.println("Entrada com ID \"" + entryId + "\" não encontrada na coleção \"" + collectionName + "\".");
+                return false;
+            }
+        }
+    }
+
+    System.out.println("Coleção \"" + collectionName + "\" não encontrada.");
+    return false;
+}
+
 
     private void addFileToZip(File file, ZipOutputStream zos) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {

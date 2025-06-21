@@ -27,7 +27,7 @@ import com.google.gson.Gson;
 public class Directory {
     Vector<Entry> files = new Vector<>();
     private Scanner scanner;
-    String path;
+    String path; // library/directory
     CollectionManager collectionManager;
 
     public Directory(String path, Scanner scanner) {
@@ -337,6 +337,115 @@ public class Directory {
 
     public void listCollectionsCurrentDir(){
         collectionManager.listCollections();
+    }
+
+    public void addEntryToCollection(){
+
+        List<Collection> collections = collectionManager.getCollections();
+
+        if (collections.isEmpty()) {
+            System.out.println("Nenhuma coleção encontrada no diretório.");
+            return;
+        }
+
+        // Lista as coleções disponíveis numericamente
+        System.out.println("Coleções disponíveis:");
+        for (int i = 0; i < collections.size(); i++) {
+            System.out.printf("%d. %s%n", i + 1, collections.get(i).getNome());
+        }
+
+        System.out.print("Digite o número da coleção: ");
+        int choice = -1;
+
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Digite um número.");
+            return;
+        }
+
+        if (choice < 1 || choice > collections.size()) {
+            System.out.println("Número fora do intervalo.");
+            return;
+        }
+
+        Collection selectedCollection = collections.get(choice - 1);
+
+        List<Entry> entriesDisponiveis = files; 
+
+        if (entriesDisponiveis.isEmpty()) {
+            System.out.println("Nenhuma entrada disponível.");
+            return;
+        }
+
+        System.out.println("Entradas disponíveis:");
+        for (int i = 0; i < entriesDisponiveis.size(); i++) {
+            Entry e = entriesDisponiveis.get(i);
+            System.out.printf("%d. %s (%s)%n", i + 1, e.getTitle(), e.getFileNameBase());
+        }
+
+        System.out.print("Digite o número da entrada: ");
+        int index;
+        try {
+            index = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida.");
+            return;
+        }
+
+        if (index < 1 || index > entriesDisponiveis.size()) {
+            System.out.println("Número fora do intervalo.");
+            return;
+        }
+
+        Entry entradaSelecionada = entriesDisponiveis.get(index - 1);
+
+        collectionManager.addEntryToCollection(selectedCollection.getNome(), entradaSelecionada);
+    }
+
+    public void removeEntryFromCollection(){
+        List<Collection> collections = collectionManager.getCollections();
+
+        if (collections.isEmpty()) {
+            System.out.println("Nenhuma coleção encontrada no diretório.");
+            return;
+        }
+
+        // Lista as coleções disponíveis numericamente
+        System.out.println("Coleções disponíveis:");
+        for (int i = 0; i < collections.size(); i++) {
+            System.out.printf("%d. %s%n", i + 1, collections.get(i).getNome());
+        }
+
+        System.out.print("Digite o número da coleção: ");
+        int choice = -1;
+
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Digite um número.");
+            return;
+        }
+
+        if (choice < 1 || choice > collections.size()) {
+            System.out.println("Número fora do intervalo.");
+            return;
+        }
+
+        Collection selectedCollection = collections.get(choice - 1);
+
+
+    
+        System.out.print("Digite o ID da entrada que deseja remover: ");
+        String idToRemove = scanner.nextLine().trim();
+    
+        boolean removed = collectionManager.removeEntryFromCollection(selectedCollection.getNome(), idToRemove);
+    
+        if (removed) {
+            System.out.println("Entrada \"" + idToRemove + "\" removida com sucesso.");
+        } else {
+            System.out.println("Nenhuma entrada com o ID \"" + idToRemove + "\" foi encontrada.");
+        }
     }
     
     public String getPath() {

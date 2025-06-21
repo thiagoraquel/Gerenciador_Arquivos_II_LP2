@@ -194,6 +194,14 @@ import java.util.Vector;
         SubDir.zipCollectionFromInput();
     }
 
+    public void addEntryToCollection(){
+        SubDir.addEntryToCollection();
+    }
+
+    public void removeEntryFromCollection(){
+        SubDir.removeEntryFromCollection();
+    }
+
     private void deleteRecursive(File file) {
         if (file.isDirectory()) {
             for (File sub : file.listFiles()) {
