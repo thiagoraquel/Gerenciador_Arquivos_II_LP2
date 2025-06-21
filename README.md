@@ -18,7 +18,7 @@ A aplicação segue o paradigma da programação orientada a objetos e é constr
 ### Diagrama de Estados
 ![Diagrama de Estados](imgs/diagrama.png)
 ### To-Do
-1º UNIDADE:
+- 1º UNIDADE:
 - [x] Base do projeto - JÚLIA
 - [x] Leitura do path das bibliotecas raiz existentes no metodo `void initialize()` da classe `GameLoop` - THIAGO
 - [x] STARTING
